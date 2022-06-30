@@ -1,0 +1,13 @@
+me\lega\linkdiscordbot\CommandHandler.class
+me\lega\linkdiscordbot\database\Commands.class
+me\lega\linkdiscordbot\database\GetAllLinks.class
+me\lega\linkdiscordbot\LinkDiscordBot.class
+me\lega\linkdiscordbot\commands\AddLink.class
+me\lega\linkdiscordbot\CommandListener.class
+me\lega\linkdiscordbot\database\Links.class
+me\lega\linkdiscordbot\CommandContainer.class
+me\lega\linkdiscordbot\database\DiscordUsers.class
+me\lega\linkdiscordbot\database\GetAllCommands.class
+me\lega\linkdiscordbot\database\GetDiscordUser.class
+me\lega\linkdiscordbot\database\InsertDiscordUser.class
+me\lega\linkdiscordbot\database\DBInfo.class
