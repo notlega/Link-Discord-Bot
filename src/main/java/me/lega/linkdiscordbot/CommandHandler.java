@@ -13,13 +13,12 @@ import me.lega.linkdiscordbot.classes.DiscordUsers;
 import me.lega.linkdiscordbot.database.GetAllCommands;
 import me.lega.linkdiscordbot.database.GetDiscordServer;
 import me.lega.linkdiscordbot.database.GetPrefix;
-import me.lega.linkdiscordbot.database.InsertPrefix;
 
 public class CommandHandler {
 
     private static final Map<String, String> commands = new HashMap<>();
     private static final GetAllCommands getAllCommands = new GetAllCommands();
-    
+
     public CommandHandler() {
         for (Commands allCommands : getAllCommands.GetAllCommands()) {
             commands.put(allCommands.getCommand(), allCommands.getCommand());
@@ -31,7 +30,7 @@ public class CommandHandler {
     }
 
     public CommandContainer parseCommand(MessageReceivedEvent event) {
-        
+
         GetDiscordServer getDiscordServer = new GetDiscordServer();
         GetPrefix getPrefix = new GetPrefix();
         String prefix = getPrefix.GetPrefix(getDiscordServer.GetDiscordServer(event)).getPrefix();
@@ -44,9 +43,13 @@ public class CommandHandler {
         try {
 
             command = commandSplitContent[0];
-
-            for (int i = 0; i < commandSplitContent.length - 1; i++) {
-                content[i] = commandSplitContent[i + 1];
+            
+            if (content.length == 0) {
+                content = null;
+            } else {
+                for (int i = 0; i < commandSplitContent.length - 1; i++) {
+                    content[i] = commandSplitContent[i + 1];
+                }
             }
 
         } catch (ArrayIndexOutOfBoundsException AIOOBE) {
@@ -54,7 +57,6 @@ public class CommandHandler {
         }
 
         return new CommandContainer(command, content, event);
-
     }
 
     public void handleCommand(DiscordUsers discordUsers, CommandContainer commandContainer) {

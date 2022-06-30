@@ -23,8 +23,9 @@ public class Help {
             for (Commands command : commands) {
                 helpOutput += command.getCommandSyntax() + ": ";
                 helpOutput += command.getCommandDescription() + "\n";
-                commandContainer.getEvent().getMessage().reply(helpOutput).queue();
             }
+            commandContainer.getEvent().getMessage().reply(helpOutput).queue();
+
         } else {
             for (Commands command : commands) {
                 if (!command.getCommand().equals(commandContainer.getContentOfCommand()[0])) {
@@ -32,8 +33,8 @@ public class Help {
                 }
                 helpOutput += command.getCommandSyntax() + ": ";
                 helpOutput += command.getCommandDescription() + "\t";
-                commandContainer.getEvent().getMessage().reply(helpOutput).queue();
             }
+            commandContainer.getEvent().getMessage().reply(helpOutput).queue();
         }
 
         if (helpOutput.equals("")) {
