@@ -1,6 +1,6 @@
 package me.lega.linkdiscordbot;
 
-import static com.sun.xml.internal.ws.util.xml.XmlUtil.getPrefix;
+import me.lega.linkdiscordbot.classes.DiscordServers;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -39,13 +39,18 @@ public class CommandListener extends ListenerAdapter {
         }
 
         DiscordUsers discordUsers = insertDiscordUser.insertDiscordUser(event);
-        insertDiscordServer.InsertDiscordServer(event);
         GetDiscordServer getDiscordServer = new GetDiscordServer();
         InsertPrefix insertPrefix = new InsertPrefix();
         GetPrefix getPrefix = new GetPrefix();
-        insertPrefix.InsertPrefix(getDiscordServer.GetDiscordServer(event), "!");
-        String prefix = getPrefix.GetPrefix(getDiscordServer.GetDiscordServer(event)).getPrefix();
-        
+        if (getDiscordServer.GetDiscordServer(event) == null) {
+            insertDiscordServer.InsertDiscordServer(event);
+        }
+        DiscordServers currentDiscordServer = getDiscordServer.GetDiscordServer(event);
+        if (getPrefix.GetPrefix(currentDiscordServer) == null) {
+            insertPrefix.InsertPrefix(currentDiscordServer, "!");
+        }
+        String prefix = getPrefix.GetPrefix(currentDiscordServer).getPrefix();
+
         // checks if prefix is correct
         if (event.getMessage().getContentRaw().startsWith(prefix)) {
             commandHandler.handleCommand(discordUsers, commandHandler.parseCommand(event));
