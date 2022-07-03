@@ -1,7 +1,8 @@
 package me.lega.linkdiscordbot.commands;
 
 import java.awt.Color;
-import java.time.LocalDateTime;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 import me.lega.linkdiscordbot.CommandContainer;
 import me.lega.linkdiscordbot.classes.DiscordUsers;
@@ -49,8 +50,14 @@ public class AddLink {
             newEmbedField = new EmbedField[2];
             newEmbedField[0] = new EmbedField("Link Name", linksClass.getLinkName(), false);
             newEmbedField[1] = new EmbedField("Link", linksClass.getLink(), false);
-            String imageLink = commandContainer.getEvent().getMessage().getEmbeds().get(0).getImage().getUrl();
-            newEmbed = new EmbedClass(Color.GREEN, newEmbedField, "<@!" + discordUsers.getDiscordUserID() + ">", imageLink, linksClass.getCreatedAt().toLocalDateTime(), "Added successfully!");
+            String imageLink = null;
+            try {
+                Thread.sleep(2500);
+                imageLink = commandContainer.getEvent().getMessage().getEmbeds().get(0).getImage().getUrl();
+            } catch (Exception E) {
+                E.printStackTrace();
+            }
+            newEmbed = new EmbedClass(Color.GREEN, newEmbedField, commandContainer.getEvent().getAuthor().getAsMention(), imageLink, linksClass.getCreatedAt().toLocalDateTime(), "Added successfully!");
             successEmbed.SuccessEmbed(newEmbed, commandContainer.getEvent());
         } else {
             commandContainer.getEvent().getMessage().reply(links + " has already been added into the database!").queue();
