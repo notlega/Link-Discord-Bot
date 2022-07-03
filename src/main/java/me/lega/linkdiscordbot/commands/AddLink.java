@@ -52,7 +52,7 @@ public class AddLink {
             newEmbedField[1] = new EmbedField("Link", linksClass.getLink(), false);
             String imageLink = null;
             try {
-                Thread.sleep(2500);
+                Thread.sleep(4000);
                 imageLink = commandContainer.getEvent().getMessage().getEmbeds().get(0).getImage().getUrl();
             } catch (Exception E) {
                 E.printStackTrace();
