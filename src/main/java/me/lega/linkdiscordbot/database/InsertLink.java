@@ -42,6 +42,7 @@ public class InsertLink {
             conn.close();
         } catch (Exception e) {
             e.printStackTrace();
+            return -1;
         }
 
         return numRowsAffected;
