@@ -62,7 +62,7 @@ public class CommandHandler {
     public void handleCommand(DiscordUsers discordUsers, CommandContainer commandContainer) {
 
         try {
-
+            
             if (commandContainer.getCommand().equals("")) {
                 return;
             }

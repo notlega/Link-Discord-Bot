@@ -19,7 +19,7 @@ public class CommandListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-
+        
         CommandHandler commandHandler = new CommandHandler();
         InsertDiscordUser insertDiscordUser = new InsertDiscordUser();
         InsertDiscordServer insertDiscordServer = new InsertDiscordServer();

@@ -8,9 +8,9 @@ import java.sql.PreparedStatement;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
-public class GetLink {
+public class GetDBLink {
 
-    public GetLink() {
+    public GetDBLink() {
 
     }
 
@@ -32,20 +32,21 @@ public class GetLink {
 
             // SQL query string
             String getLinkQuery;
-            PreparedStatement ps;
+            PreparedStatement ps = null;
 
-            if (linksClass.getLINK_PATTERN().matcher(link).find()) {
+            if (link.equals("")) {
+                linkName = "%" + linkName + "%";
+                getLinkQuery = "SELECT * FROM links WHERE link_name LIKE ?;";
+
+                // Execute SQL query
+                ps = conn.prepareStatement(getLinkQuery, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                ps.setString(1, linkName);
+            } else if (linksClass.getLINK_PATTERN().matcher(link).find()) {
                 getLinkQuery = "SELECT * FROM links WHERE link = ?;";
 
                 // Execute SQL query
                 ps = conn.prepareStatement(getLinkQuery, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
                 ps.setString(1, link);
-            } else {
-                getLinkQuery = "SELECT * FROM links WHERE link_name = ?;";
-
-                // Execute SQL query
-                ps = conn.prepareStatement(getLinkQuery, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-                ps.setString(1, linkName);
             }
 
             ResultSet rs = ps.executeQuery();

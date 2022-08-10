@@ -24,7 +24,6 @@ public class SuccessEmbed {
             successEmbed.setImage(embedData.getImage());
         }
         successEmbed.setTimestamp(embedData.getTimestamp());
-        System.out.println(embedData.getTimestamp());
         successEmbed.setTitle(embedData.getTitle());
 
         event.getMessage().replyEmbeds(successEmbed.build()).queue();

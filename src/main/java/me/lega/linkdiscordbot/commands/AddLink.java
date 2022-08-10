@@ -1,14 +1,12 @@
 package me.lega.linkdiscordbot.commands;
 
 import java.awt.Color;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
 
 import me.lega.linkdiscordbot.CommandContainer;
 import me.lega.linkdiscordbot.classes.DiscordUsers;
 import me.lega.linkdiscordbot.classes.EmbedClass;
 import me.lega.linkdiscordbot.classes.EmbedField;
-import me.lega.linkdiscordbot.database.GetLink;
+import me.lega.linkdiscordbot.database.GetDBLink;
 import me.lega.linkdiscordbot.database.InsertLink;
 import me.lega.linkdiscordbot.classes.Links;
 import me.lega.linkdiscordbot.embeds.SuccessEmbed;
@@ -40,7 +38,7 @@ public class AddLink {
             }
         }
 
-        GetLink getLink = new GetLink();
+        GetDBLink getLink = new GetDBLink();
         InsertLink insertLink = new InsertLink();
         linksClass = getLink.GetLink(linkName, commandContainer.getContentOfCommand()[commandContainer.getContentOfCommand().length - 1]);
 
@@ -52,8 +50,8 @@ public class AddLink {
             newEmbedField[1] = new EmbedField("Link", linksClass.getLink(), false);
             String imageLink = null;
             try {
-                Thread.sleep(4000);
                 imageLink = commandContainer.getEvent().getMessage().getEmbeds().get(0).getImage().getUrl();
+                System.out.println(imageLink);
             } catch (Exception E) {
                 E.printStackTrace();
             }
