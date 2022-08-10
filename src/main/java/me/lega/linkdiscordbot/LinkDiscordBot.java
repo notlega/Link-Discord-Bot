@@ -1,16 +1,14 @@
 package me.lega.linkdiscordbot;
 
-import java.util.EnumSet;
-
+import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
-import net.dv8tion.jda.api.OnlineStatus;
-
-import io.github.cdimascio.dotenv.Dotenv;
 
 import javax.security.auth.login.LoginException;
+import java.util.EnumSet;
 
 public class LinkDiscordBot {
 
@@ -18,7 +16,7 @@ public class LinkDiscordBot {
         initialise();
     }
 
-    public static JDA initialise() {
+    public static void initialise() {
 
         Dotenv dotenv = Dotenv.configure().load();
         JDA bot = null;
@@ -37,7 +35,5 @@ public class LinkDiscordBot {
         } catch (LoginException LE) {
             LE.printStackTrace();
         }
-
-        return bot;
     }
 }

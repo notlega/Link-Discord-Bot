@@ -1,15 +1,10 @@
 package me.lega.linkdiscordbot;
 
 import me.lega.linkdiscordbot.classes.DiscordServers;
+import me.lega.linkdiscordbot.classes.DiscordUsers;
+import me.lega.linkdiscordbot.database.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-
-import me.lega.linkdiscordbot.database.InsertDiscordUser;
-import me.lega.linkdiscordbot.classes.DiscordUsers;
-import me.lega.linkdiscordbot.database.GetDiscordServer;
-import me.lega.linkdiscordbot.database.GetPrefix;
-import me.lega.linkdiscordbot.database.InsertDiscordServer;
-import me.lega.linkdiscordbot.database.InsertPrefix;
 
 public class CommandListener extends ListenerAdapter {
 

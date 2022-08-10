@@ -1,18 +1,17 @@
 package me.lega.linkdiscordbot;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-
 import me.lega.linkdiscordbot.classes.Commands;
 import me.lega.linkdiscordbot.classes.DiscordUsers;
 import me.lega.linkdiscordbot.database.GetAllCommands;
 import me.lega.linkdiscordbot.database.GetDiscordServer;
 import me.lega.linkdiscordbot.database.GetPrefix;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CommandHandler {
 
@@ -47,9 +46,7 @@ public class CommandHandler {
             if (content.length == 0) {
                 content = null;
             } else {
-                for (int i = 0; i < commandSplitContent.length - 1; i++) {
-                    content[i] = commandSplitContent[i + 1];
-                }
+                System.arraycopy(commandSplitContent, 1, content, 0, commandSplitContent.length - 1);
             }
 
         } catch (ArrayIndexOutOfBoundsException AIOOBE) {

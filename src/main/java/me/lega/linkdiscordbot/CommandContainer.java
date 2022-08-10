@@ -4,9 +4,9 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class CommandContainer {
 
-    private String command;
-    private String[] contentOfCommand;
-    private MessageReceivedEvent event;
+    private final String command;
+    private final String[] contentOfCommand;
+    private final MessageReceivedEvent event;
 
     public CommandContainer(String command, String[] contentOfCommand, MessageReceivedEvent event) {
         this.command = command;

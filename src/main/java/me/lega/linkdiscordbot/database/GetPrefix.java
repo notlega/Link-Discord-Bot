@@ -1,14 +1,13 @@
 package me.lega.linkdiscordbot.database;
 
+import io.github.cdimascio.dotenv.Dotenv;
+import me.lega.linkdiscordbot.classes.DiscordServers;
 import me.lega.linkdiscordbot.classes.Prefixes;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.PreparedStatement;
-
-import io.github.cdimascio.dotenv.Dotenv;
-import me.lega.linkdiscordbot.classes.DiscordServers;
+import java.sql.ResultSet;
 
 public class GetPrefix {
 

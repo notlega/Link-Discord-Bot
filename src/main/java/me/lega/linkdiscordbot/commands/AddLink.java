@@ -1,15 +1,15 @@
 package me.lega.linkdiscordbot.commands;
 
-import java.awt.Color;
-
 import me.lega.linkdiscordbot.CommandContainer;
 import me.lega.linkdiscordbot.classes.DiscordUsers;
 import me.lega.linkdiscordbot.classes.EmbedClass;
 import me.lega.linkdiscordbot.classes.EmbedField;
+import me.lega.linkdiscordbot.classes.Links;
 import me.lega.linkdiscordbot.database.GetDBLink;
 import me.lega.linkdiscordbot.database.InsertLink;
-import me.lega.linkdiscordbot.classes.Links;
 import me.lega.linkdiscordbot.embeds.SuccessEmbed;
+
+import java.awt.*;
 
 public class AddLink {
 

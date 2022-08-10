@@ -3,10 +3,10 @@ package me.lega.linkdiscordbot.commands;
 import me.lega.linkdiscordbot.CommandContainer;
 import me.lega.linkdiscordbot.classes.DiscordServers;
 import me.lega.linkdiscordbot.classes.DiscordUsers;
+import me.lega.linkdiscordbot.classes.Prefixes;
 import me.lega.linkdiscordbot.database.GetPrefix;
 import me.lega.linkdiscordbot.database.InsertDiscordServer;
 import me.lega.linkdiscordbot.database.InsertPrefix;
-import me.lega.linkdiscordbot.classes.Prefixes;
 import me.lega.linkdiscordbot.database.UpdatePrefix;
 
 public class SetPrefix {

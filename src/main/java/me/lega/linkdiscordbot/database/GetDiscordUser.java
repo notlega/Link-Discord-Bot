@@ -1,14 +1,13 @@
 package me.lega.linkdiscordbot.database;
 
-import me.lega.linkdiscordbot.classes.DiscordUsers;
 import io.github.cdimascio.dotenv.Dotenv;
+import me.lega.linkdiscordbot.classes.DiscordUsers;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class GetDiscordUser {
 

@@ -1,12 +1,11 @@
 package me.lega.linkdiscordbot.database;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import me.lega.linkdiscordbot.classes.DiscordUsers;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-
-import io.github.cdimascio.dotenv.Dotenv;
 
 public class InsertLink {
 

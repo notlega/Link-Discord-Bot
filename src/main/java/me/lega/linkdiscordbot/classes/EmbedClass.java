@@ -1,6 +1,6 @@
 package me.lega.linkdiscordbot.classes;
 
-import java.awt.Color;
+import java.awt.*;
 import java.time.temporal.TemporalAccessor;
 
 public class EmbedClass {
