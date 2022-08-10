@@ -1,7 +1,7 @@
 package me.lega.linkdiscordbot.classes;
 
 public class DiscordServers {
-    
+
     private int id;
     private long discordServerID;
     private String discordServerName;

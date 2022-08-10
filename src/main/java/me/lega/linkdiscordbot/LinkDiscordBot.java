@@ -13,13 +13,13 @@ import io.github.cdimascio.dotenv.Dotenv;
 import javax.security.auth.login.LoginException;
 
 public class LinkDiscordBot {
-    
+
     public static void main(String[] args) {
         initialise();
     }
 
     public static JDA initialise() {
-        
+
         Dotenv dotenv = Dotenv.configure().load();
         JDA bot = null;
 
@@ -33,7 +33,7 @@ public class LinkDiscordBot {
                     .setRequestTimeoutRetry(true)
                     .addEventListeners(new CommandListener())
                     .build();
-            
+
         } catch (LoginException LE) {
             LE.printStackTrace();
         }

@@ -1,11 +1,11 @@
 package me.lega.linkdiscordbot.classes;
 
 public class EmbedField {
-    
+
     private String name;
     private String value;
     private boolean inline;
-    
+
     public EmbedField(String name, String value, boolean inline) {
         this.name = name;
         this.value = value;

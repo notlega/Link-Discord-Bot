@@ -4,16 +4,16 @@ import java.sql.Timestamp;
 import java.util.regex.Pattern;
 
 public class Links {
-    
+
     private static final Pattern LINK_PATTERN = Pattern.compile("[(http(s)?):\\/\\/(www\\.)?a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)");
     private int id;
     private String link;
     private String linkName;
     private int discordUserID;
     private Timestamp createdAt;
-    
+
     public Links() {
-        
+
     }
 
     public Links(int id, String link, String linkName, int discordUserID, Timestamp createdAt) {
@@ -23,7 +23,7 @@ public class Links {
         this.discordUserID = discordUserID;
         this.createdAt = createdAt;
     }
-    
+
     public Pattern getLINK_PATTERN() {
         return LINK_PATTERN;
     }

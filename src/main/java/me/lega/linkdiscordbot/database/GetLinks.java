@@ -1,6 +1,7 @@
 package me.lega.linkdiscordbot.database;
 
 import me.lega.linkdiscordbot.classes.Links;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -35,7 +36,7 @@ public class GetLinks {
             // Execute SQL query
             PreparedStatement ps = conn.prepareStatement(getCommandQuery, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
             ps.setInt(1, discordUserID);
-            
+
             ResultSet rs = ps.executeQuery();
 
             rs.last();

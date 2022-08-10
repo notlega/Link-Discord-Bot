@@ -1,11 +1,11 @@
 package me.lega.linkdiscordbot.classes;
 
 public class Prefixes {
-    
+
     private int id;
     private String prefix;
     private int discordServerID;
-    
+
     public Prefixes(int id, String prefix, int discordServerID) {
         this.id = id;
         this.prefix = prefix;
@@ -27,7 +27,7 @@ public class Prefixes {
     public void setPrefix(String prefix) {
         this.prefix = prefix;
     }
-    
+
     public int getDiscordServerID() {
         return discordServerID;
     }

@@ -1,6 +1,7 @@
 package me.lega.linkdiscordbot.database;
 
 import me.lega.linkdiscordbot.classes.Links;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;

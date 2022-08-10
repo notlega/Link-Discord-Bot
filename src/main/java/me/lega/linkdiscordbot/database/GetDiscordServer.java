@@ -1,6 +1,7 @@
 package me.lega.linkdiscordbot.database;
 
 import me.lega.linkdiscordbot.classes.DiscordServers;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -11,16 +12,16 @@ import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class GetDiscordServer {
-    
+
     public GetDiscordServer() {
-        
+
     }
-    
+
     public DiscordServers GetDiscordServer(MessageReceivedEvent event) {
-        
+
         Dotenv dotenv = Dotenv.configure().load();
         DBInfo dbInfo = new DBInfo();
-        
+
         DiscordServers discordServers = null;
 
         try {
@@ -37,7 +38,7 @@ public class GetDiscordServer {
             // Execute SQL query
             PreparedStatement ps = conn.prepareStatement(getDiscordServerQuery, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
             ps.setLong(1, event.getGuild().getIdLong());
-            
+
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {

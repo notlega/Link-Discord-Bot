@@ -1,7 +1,7 @@
 package me.lega.linkdiscordbot.classes;
 
 public class DiscordUsers {
-    
+
     private int id;
     private int privilegeLevel;
     private long discordUserID;

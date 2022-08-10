@@ -1,6 +1,7 @@
 package me.lega.linkdiscordbot.database;
 
 import me.lega.linkdiscordbot.classes.Prefixes;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -10,16 +11,16 @@ import io.github.cdimascio.dotenv.Dotenv;
 import me.lega.linkdiscordbot.classes.DiscordServers;
 
 public class GetPrefix {
-    
+
     public GetPrefix() {
-        
+
     }
-    
+
     public Prefixes GetPrefix(DiscordServers discordServers) {
-        
+
         Dotenv dotenv = Dotenv.configure().load();
         DBInfo dbInfo = new DBInfo();
-        
+
         Prefixes prefixes = null;
 
         try {
@@ -36,7 +37,7 @@ public class GetPrefix {
             // Execute SQL query
             PreparedStatement ps = conn.prepareStatement(getDiscordServerQuery, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
             ps.setInt(1, discordServers.getId());
-            
+
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {

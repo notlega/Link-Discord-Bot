@@ -43,7 +43,7 @@ public class CommandHandler {
         try {
 
             command = commandSplitContent[0];
-            
+
             if (content.length == 0) {
                 content = null;
             } else {
@@ -62,7 +62,7 @@ public class CommandHandler {
     public void handleCommand(DiscordUsers discordUsers, CommandContainer commandContainer) {
 
         try {
-            
+
             if (commandContainer.getCommand().equals("")) {
                 return;
             }

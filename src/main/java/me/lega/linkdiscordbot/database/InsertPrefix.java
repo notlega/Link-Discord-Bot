@@ -1,6 +1,7 @@
 package me.lega.linkdiscordbot.database;
 
 import me.lega.linkdiscordbot.classes.DiscordServers;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,18 +9,18 @@ import java.sql.PreparedStatement;
 import io.github.cdimascio.dotenv.Dotenv;
 
 public class InsertPrefix {
-    
+
     public InsertPrefix() {
-        
+
     }
-    
+
     public int InsertPrefix(DiscordServers discordServers, String prefix) {
-        
+
         Dotenv dotenv = Dotenv.configure().load();
         DBInfo dbInfo = new DBInfo();
 
         int numRowsAffected = -1;
-        
+
         try {
 
             // Load JDBC Driver

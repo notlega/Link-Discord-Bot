@@ -11,16 +11,16 @@ import java.sql.ResultSet;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class GetDiscordUser {
-        
+
     public GetDiscordUser() {
-        
+
     }
-    
+
     public DiscordUsers GetDiscordUser(MessageReceivedEvent event) {
-        
+
         Dotenv dotenv = Dotenv.configure().load();
         DBInfo dbInfo = new DBInfo();
-        
+
         DiscordUsers discordUsers = null;
 
         try {
@@ -37,7 +37,7 @@ public class GetDiscordUser {
             // Execute SQL query
             PreparedStatement ps = conn.prepareStatement(getDiscordUserQuery, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
             ps.setLong(1, event.getAuthor().getIdLong());
-            
+
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {

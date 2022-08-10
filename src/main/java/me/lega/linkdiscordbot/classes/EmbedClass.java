@@ -4,14 +4,14 @@ import java.awt.Color;
 import java.time.temporal.TemporalAccessor;
 
 public class EmbedClass {
-    
+
     private Color Color;
     private EmbedField[] Field;
     private String Footer;
     private String Image;
     private TemporalAccessor Timestamp;
     private String Title;
-    
+
     public EmbedClass(Color Color, EmbedField[] Field, String Footer, String Image, TemporalAccessor Timestamp, String Title) {
         this.Color = Color;
         this.Field = Field;
@@ -68,6 +68,6 @@ public class EmbedClass {
     public void setTitle(String Title) {
         this.Title = Title;
     }
-    
-    
+
+
 }

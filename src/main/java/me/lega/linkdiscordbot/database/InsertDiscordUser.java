@@ -11,23 +11,23 @@ import java.sql.ResultSet;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class InsertDiscordUser {
-        
+
     public InsertDiscordUser() {
-        
+
     }
-    
+
     public DiscordUsers insertDiscordUser(MessageReceivedEvent event) {
-        
+
         GetDiscordUser getDiscordUser = new GetDiscordUser();
         DiscordUsers discordUsers = getDiscordUser.GetDiscordUser(event);
-        
+
         if (discordUsers != null) {
             return discordUsers;
         }
-        
+
         Dotenv dotenv = Dotenv.configure().load();
         DBInfo dbInfo = new DBInfo();
-        
+
         try {
 
             // Load JDBC Driver

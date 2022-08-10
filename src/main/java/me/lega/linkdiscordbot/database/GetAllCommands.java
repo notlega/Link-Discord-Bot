@@ -1,6 +1,7 @@
 package me.lega.linkdiscordbot.database;
 
 import me.lega.linkdiscordbot.classes.Commands;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -13,12 +14,12 @@ public class GetAllCommands {
     public GetAllCommands() {
 
     }
-    
+
     public Commands[] GetAllCommands() {
 
         Dotenv dotenv = Dotenv.configure().load();
         DBInfo dbInfo = new DBInfo();
-        
+
         Commands[] commands = null;
 
         try {
@@ -35,7 +36,7 @@ public class GetAllCommands {
 
             // Execute SQL query
             ResultSet rs = stmt.executeQuery(getCommandQuery);
-            
+
             rs.last();
             commands = new Commands[rs.getRow()];
             rs.beforeFirst();
