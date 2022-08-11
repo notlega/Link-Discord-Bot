@@ -1,7 +1,7 @@
 package me.lega.linkdiscordbot.database;
 
 import io.github.cdimascio.dotenv.Dotenv;
-import me.lega.linkdiscordbot.classes.DiscordUsers;
+import me.lega.linkdiscordbot.classes.DiscordUser;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.sql.Connection;
@@ -15,25 +15,23 @@ public class InsertDiscordUser {
 
     }
 
-    public DiscordUsers insertDiscordUser(MessageReceivedEvent event) {
+    public void insertDiscordUser(MessageReceivedEvent event) {
 
         GetDiscordUser getDiscordUser = new GetDiscordUser();
-        DiscordUsers discordUsers = getDiscordUser.GetDiscordUser(event);
+        DiscordUser discordUser = getDiscordUser.getDiscordUser(event);
 
-        if (discordUsers != null) {
-            return discordUsers;
+        if (discordUser != null) {
+            return;
         }
 
         Dotenv dotenv = Dotenv.configure().load();
-        DBInfo dbInfo = new DBInfo();
-
         try {
 
             // Load JDBC Driver
-            Class.forName(dbInfo.getJDBC_DRIVER());
+            Class.forName(dotenv.get("JDBC_DRIVER"));
 
             // Open connection to database
-            Connection conn = DriverManager.getConnection(dbInfo.getDB_URL() + dbInfo.getDB_NAME(), dotenv.get("SQLUser"), dotenv.get("SQLPassword"));
+            Connection conn = DriverManager.getConnection(dotenv.get("DB_URI"), dotenv.get("SQLUser"), dotenv.get("SQLPassword"));
 
             // SQL query string
             String insertDiscordUserQuery = "INSERT INTO discord_users (privilege_level, discord_user_id, discord_user_tag) VALUES (?, ?, ?);";
@@ -45,14 +43,12 @@ public class InsertDiscordUser {
             ps.setString(3, event.getAuthor().getAsTag());
             ps.executeUpdate();
 
-            discordUsers = getDiscordUser.GetDiscordUser(event);
+            discordUser = getDiscordUser.getDiscordUser(event);
 
             // Close connection
             conn.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return discordUsers;
     }
 }

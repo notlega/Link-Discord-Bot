@@ -1,7 +1,7 @@
 package me.lega.linkdiscordbot.database;
 
 import io.github.cdimascio.dotenv.Dotenv;
-import me.lega.linkdiscordbot.classes.DiscordServers;
+import me.lega.linkdiscordbot.classes.DiscordServer;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.sql.Connection;
@@ -15,25 +15,24 @@ public class InsertDiscordServer {
 
     }
 
-    public DiscordServers InsertDiscordServer(MessageReceivedEvent event) {
+    public void insertDiscordServer(MessageReceivedEvent event) {
 
         GetDiscordServer getDiscordServer = new GetDiscordServer();
-        DiscordServers discordServers = getDiscordServer.GetDiscordServer(event);
+        DiscordServer discordServer = getDiscordServer.getDiscordServer(event);
 
-        if (discordServers != null) {
-            return discordServers;
+        if (discordServer != null) {
+            return;
         }
 
         Dotenv dotenv = Dotenv.configure().load();
-        DBInfo dbInfo = new DBInfo();
 
         try {
 
             // Load JDBC Driver
-            Class.forName(dbInfo.getJDBC_DRIVER());
+            Class.forName(dotenv.get("JDBC_DRIVER"));
 
             // Open connection to database
-            Connection conn = DriverManager.getConnection(dbInfo.getDB_URL() + dbInfo.getDB_NAME(), dotenv.get("SQLUser"), dotenv.get("SQLPassword"));
+            Connection conn = DriverManager.getConnection(dotenv.get("DB_URI"), dotenv.get("SQLUser"), dotenv.get("SQLPassword"));
 
             // SQL query string
             String getDiscordServerQuery = "INSERT INTO discord_servers (discord_server_id, discord_server_name) VALUES (?, ?);";
@@ -44,14 +43,10 @@ public class InsertDiscordServer {
             ps.setString(2, event.getGuild().getName());
             ps.executeUpdate();
 
-            discordServers = getDiscordServer.GetDiscordServer(event);
-
             // Close connection
             conn.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return discordServers;
     }
 }

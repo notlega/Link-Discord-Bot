@@ -1,7 +1,7 @@
 package me.lega.linkdiscordbot.database;
 
 import io.github.cdimascio.dotenv.Dotenv;
-import me.lega.linkdiscordbot.classes.Links;
+import me.lega.linkdiscordbot.classes.Link;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,20 +14,18 @@ public class GetLinks {
 
     }
 
-    public Links[] GetLinks(int discordUserID) {
+    public Link[] GetLinks(int discordUserID) {
 
         Dotenv dotenv = Dotenv.configure().load();
-        DBInfo dbInfo = new DBInfo();
-
-        Links[] links = null;
+        Link[] links = null;
 
         try {
 
             // Load JDBC Driver
-            Class.forName(dbInfo.getJDBC_DRIVER());
+            Class.forName(dotenv.get("JDBC_DRIVER"));
 
             // Open connection to database
-            Connection conn = DriverManager.getConnection(dbInfo.getDB_URL() + dbInfo.getDB_NAME(), dotenv.get("SQLUser"), dotenv.get("SQLPassword"));
+            Connection conn = DriverManager.getConnection(dotenv.get("DB_URI"), dotenv.get("SQLUser"), dotenv.get("SQLPassword"));
 
             // SQL query string
             String getCommandQuery = "SELECT * FROM links WHERE discord_user_id = ?;";
@@ -39,11 +37,11 @@ public class GetLinks {
             ResultSet rs = ps.executeQuery();
 
             rs.last();
-            links = new Links[rs.getRow()];
+            links = new Link[rs.getRow()];
             rs.beforeFirst();
 
             while (rs.next()) {
-                links[rs.getRow() - 1] = new Links(rs.getInt("id"), rs.getString("link"), rs.getString("link_name"), rs.getInt("discord_user_id"), rs.getTimestamp("created_at"));
+                links[rs.getRow() - 1] = new Link(rs.getInt("id"), rs.getString("link"), rs.getString("link_name"), rs.getInt("discord_user_id"), rs.getTimestamp("created_at"));
             }
 
             // Close connection

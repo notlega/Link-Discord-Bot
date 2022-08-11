@@ -1,7 +1,7 @@
 package me.lega.linkdiscordbot.database;
 
 import io.github.cdimascio.dotenv.Dotenv;
-import me.lega.linkdiscordbot.classes.DiscordUsers;
+import me.lega.linkdiscordbot.classes.DiscordUser;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.sql.Connection;
@@ -15,20 +15,18 @@ public class GetDiscordUser {
 
     }
 
-    public DiscordUsers GetDiscordUser(MessageReceivedEvent event) {
+    public DiscordUser getDiscordUser(MessageReceivedEvent event) {
 
         Dotenv dotenv = Dotenv.configure().load();
-        DBInfo dbInfo = new DBInfo();
-
-        DiscordUsers discordUsers = null;
+        DiscordUser discordUser = null;
 
         try {
 
             // Load JDBC Driver
-            Class.forName(dbInfo.getJDBC_DRIVER());
+            Class.forName(dotenv.get("JDBC_DRIVER"));
 
             // Open connection to database
-            Connection conn = DriverManager.getConnection(dbInfo.getDB_URL() + dbInfo.getDB_NAME(), dotenv.get("SQLUser"), dotenv.get("SQLPassword"));
+            Connection conn = DriverManager.getConnection(dotenv.get("DB_URI"), dotenv.get("SQLUser"), dotenv.get("SQLPassword"));
 
             // SQL query string
             String getDiscordUserQuery = "SELECT * FROM discord_users WHERE discord_user_id = ?;";
@@ -40,7 +38,7 @@ public class GetDiscordUser {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                discordUsers = new DiscordUsers(rs.getInt("id"), rs.getInt("privilege_level"), rs.getLong("discord_user_id"), rs.getString("discord_user_tag"));
+                discordUser = new DiscordUser(rs.getInt("id"), rs.getInt("privilege_level"), rs.getLong("discord_user_id"), rs.getString("discord_user_tag"));
             }
 
             // Close connection
@@ -49,6 +47,6 @@ public class GetDiscordUser {
             e.printStackTrace();
         }
 
-        return discordUsers;
+        return discordUser;
     }
 }

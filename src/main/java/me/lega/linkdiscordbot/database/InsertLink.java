@@ -1,7 +1,7 @@
 package me.lega.linkdiscordbot.database;
 
 import io.github.cdimascio.dotenv.Dotenv;
-import me.lega.linkdiscordbot.classes.DiscordUsers;
+import me.lega.linkdiscordbot.classes.DiscordUser;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -13,20 +13,19 @@ public class InsertLink {
 
     }
 
-    public int InsertLink(DiscordUsers discordUsers, String link, String linkName) {
+    public int insertLink(DiscordUser currentDiscordUser, String linkName, String link) {
 
         Dotenv dotenv = Dotenv.configure().load();
-        DBInfo dbInfo = new DBInfo();
 
         int numRowsAffected = -1;
 
         try {
 
             // Load JDBC Driver
-            Class.forName(dbInfo.getJDBC_DRIVER());
+            Class.forName(dotenv.get("JDBC_DRIVER"));
 
             // Open connection to database
-            Connection conn = DriverManager.getConnection(dbInfo.getDB_URL() + dbInfo.getDB_NAME(), dotenv.get("SQLUser"), dotenv.get("SQLPassword"));
+            Connection conn = DriverManager.getConnection(dotenv.get("DB_URI"), dotenv.get("SQLUser"), dotenv.get("SQLPassword"));
 
             // SQL query string
             String insertImageLink = "INSERT INTO links (link, link_name, discord_user_id) VALUES (?, ?, ?);";
@@ -35,7 +34,7 @@ public class InsertLink {
             PreparedStatement ps = conn.prepareStatement(insertImageLink);
             ps.setString(1, link);
             ps.setString(2, linkName);
-            ps.setLong(3, discordUsers.getId());
+            ps.setLong(3, currentDiscordUser.getId());
             numRowsAffected = ps.executeUpdate();
 
             // Close connection

@@ -1,7 +1,7 @@
 package me.lega.linkdiscordbot.database;
 
 import io.github.cdimascio.dotenv.Dotenv;
-import me.lega.linkdiscordbot.classes.Commands;
+import me.lega.linkdiscordbot.classes.Command;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,34 +14,36 @@ public class GetAllCommands {
 
     }
 
-    public Commands[] GetAllCommands() {
+    /**
+     * Get all commands from the database
+     * @return Array of commands
+     */
+    public Command[] getAllCommands() {
 
         Dotenv dotenv = Dotenv.configure().load();
-        DBInfo dbInfo = new DBInfo();
-
-        Commands[] commands = null;
+        Command[] commands = null;
 
         try {
 
             // Load JDBC Driver
-            Class.forName(dbInfo.getJDBC_DRIVER());
+            Class.forName(dotenv.get("JDBC_DRIVER"));
 
             // Open connection to database
-            Connection conn = DriverManager.getConnection(dbInfo.getDB_URL() + dbInfo.getDB_NAME(), dotenv.get("SQLUser"), dotenv.get("SQLPassword"));
+            Connection conn = DriverManager.getConnection(dotenv.get("DB_URI"), dotenv.get("SQLUser"), dotenv.get("SQLPassword"));
 
             // SQL query string
             Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            String getCommandQuery = "SELECT * FROM commands ORDER BY command;";
+            String getCommandQuery = "SELECT * FROM commands ORDER BY command ASC;";
 
             // Execute SQL query
             ResultSet rs = stmt.executeQuery(getCommandQuery);
 
             rs.last();
-            commands = new Commands[rs.getRow()];
+            commands = new Command[rs.getRow()];
             rs.beforeFirst();
 
             while (rs.next()) {
-                commands[rs.getRow() - 1] = new Commands(rs.getInt("id"), rs.getString("command"), rs.getString("command_syntax"), rs.getString("command_description"));
+                commands[rs.getRow() - 1] = new Command(rs.getInt("id"), rs.getString("command"), rs.getString("command_syntax"), rs.getString("command_description"));
             }
 
             // Close connection

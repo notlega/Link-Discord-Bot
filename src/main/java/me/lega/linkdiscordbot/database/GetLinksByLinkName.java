@@ -1,34 +1,32 @@
 package me.lega.linkdiscordbot.database;
 
 import io.github.cdimascio.dotenv.Dotenv;
-import me.lega.linkdiscordbot.classes.Links;
+import me.lega.linkdiscordbot.classes.Link;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class GetDBLink {
+public class GetLinksByLinkName {
 
-    public GetDBLink() {
+    public GetLinksByLinkName() {
 
     }
 
-    public Links GetLink(String linkName, String link) {
+    public Link getLinksByLinkName(String linkName, String link) {
 
-        Links linksClass = new Links();
+        Link linkClass = new Link();
         Dotenv dotenv = Dotenv.configure().load();
-        DBInfo dbInfo = new DBInfo();
-
-        Links links = null;
+        Link links = null;
 
         try {
 
             // Load JDBC Driver
-            Class.forName(dbInfo.getJDBC_DRIVER());
+            Class.forName(dotenv.get("JDBC_DRIVER"));
 
             // Open connection to database
-            Connection conn = DriverManager.getConnection(dbInfo.getDB_URL() + dbInfo.getDB_NAME(), dotenv.get("SQLUser"), dotenv.get("SQLPassword"));
+            Connection conn = DriverManager.getConnection(dotenv.get("DB_URI"), dotenv.get("SQLUser"), dotenv.get("SQLPassword"));
 
             // SQL query string
             String getLinkQuery;
@@ -41,7 +39,7 @@ public class GetDBLink {
                 // Execute SQL query
                 ps = conn.prepareStatement(getLinkQuery, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
                 ps.setString(1, linkName);
-            } else if (linksClass.getLINK_PATTERN().matcher(link).find()) {
+            } else if (linkClass.getLINK_PATTERN().matcher(link).find()) {
                 getLinkQuery = "SELECT * FROM links WHERE link = ?;";
 
                 // Execute SQL query
@@ -52,7 +50,7 @@ public class GetDBLink {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                links = new Links(rs.getInt("id"), rs.getString("link"), rs.getString("link_name"), rs.getInt("discord_user_id"), rs.getTimestamp("created_at"));
+                links = new Link(rs.getInt("id"), rs.getString("link"), rs.getString("link_name"), rs.getInt("discord_user_id"), rs.getTimestamp("created_at"));
             }
 
             // Close connection

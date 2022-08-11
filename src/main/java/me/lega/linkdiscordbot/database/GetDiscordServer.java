@@ -1,7 +1,7 @@
 package me.lega.linkdiscordbot.database;
 
 import io.github.cdimascio.dotenv.Dotenv;
-import me.lega.linkdiscordbot.classes.DiscordServers;
+import me.lega.linkdiscordbot.classes.DiscordServer;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.sql.Connection;
@@ -15,20 +15,18 @@ public class GetDiscordServer {
 
     }
 
-    public DiscordServers GetDiscordServer(MessageReceivedEvent event) {
+    public DiscordServer getDiscordServer(MessageReceivedEvent event) {
 
         Dotenv dotenv = Dotenv.configure().load();
-        DBInfo dbInfo = new DBInfo();
-
-        DiscordServers discordServers = null;
+        DiscordServer discordServer = null;
 
         try {
 
             // Load JDBC Driver
-            Class.forName(dbInfo.getJDBC_DRIVER());
+            Class.forName(dotenv.get("JDBC_DRIVER"));
 
             // Open connection to database
-            Connection conn = DriverManager.getConnection(dbInfo.getDB_URL() + dbInfo.getDB_NAME(), dotenv.get("SQLUser"), dotenv.get("SQLPassword"));
+            Connection conn = DriverManager.getConnection(dotenv.get("DB_URI"), dotenv.get("SQLUser"), dotenv.get("SQLPassword"));
 
             // SQL query string
             String getDiscordServerQuery = "SELECT * FROM discord_servers WHERE discord_server_id = ?;";
@@ -40,7 +38,7 @@ public class GetDiscordServer {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                discordServers = new DiscordServers(rs.getInt("id"), rs.getLong("discord_server_id"), rs.getString("discord_server_name"));
+                discordServer = new DiscordServer(rs.getInt("id"), rs.getLong("discord_server_id"), rs.getString("discord_server_name"));
             }
 
             // Close connection
@@ -49,6 +47,6 @@ public class GetDiscordServer {
             e.printStackTrace();
         }
 
-        return discordServers;
+        return discordServer;
     }
 }

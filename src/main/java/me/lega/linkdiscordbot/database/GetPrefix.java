@@ -1,7 +1,7 @@
 package me.lega.linkdiscordbot.database;
 
 import io.github.cdimascio.dotenv.Dotenv;
-import me.lega.linkdiscordbot.classes.DiscordServers;
+import me.lega.linkdiscordbot.classes.DiscordServer;
 import me.lega.linkdiscordbot.classes.Prefixes;
 
 import java.sql.Connection;
@@ -15,27 +15,25 @@ public class GetPrefix {
 
     }
 
-    public Prefixes GetPrefix(DiscordServers discordServers) {
+    public Prefixes getPrefix(DiscordServer discordServer) {
 
         Dotenv dotenv = Dotenv.configure().load();
-        DBInfo dbInfo = new DBInfo();
-
         Prefixes prefixes = null;
 
         try {
 
             // Load JDBC Driver
-            Class.forName(dbInfo.getJDBC_DRIVER());
+            Class.forName(dotenv.get("JDBC_DRIVER"));
 
             // Open connection to database
-            Connection conn = DriverManager.getConnection(dbInfo.getDB_URL() + dbInfo.getDB_NAME(), dotenv.get("SQLUser"), dotenv.get("SQLPassword"));
+            Connection conn = DriverManager.getConnection(dotenv.get("DB_URI"), dotenv.get("SQLUser"), dotenv.get("SQLPassword"));
 
             // SQL query string
             String getDiscordServerQuery = "SELECT * FROM prefixes WHERE discord_server_id = ?;";
 
             // Execute SQL query
             PreparedStatement ps = conn.prepareStatement(getDiscordServerQuery, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            ps.setInt(1, discordServers.getId());
+            ps.setInt(1, discordServer.getId());
 
             ResultSet rs = ps.executeQuery();
 
