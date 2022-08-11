@@ -3,7 +3,7 @@ package me.lega.linkdiscordbot.classes;
 import java.sql.Timestamp;
 import java.util.regex.Pattern;
 
-public class Links {
+public class Link {
 
     private static final Pattern LINK_PATTERN = Pattern.compile("[(http(s)?):\\/\\/(www\\.)?a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)");
     private int id;
@@ -12,11 +12,11 @@ public class Links {
     private int discordUserID;
     private Timestamp createdAt;
 
-    public Links() {
+    public Link() {
 
     }
 
-    public Links(int id, String link, String linkName, int discordUserID, Timestamp createdAt) {
+    public Link(int id, String link, String linkName, int discordUserID, Timestamp createdAt) {
         this.id = id;
         this.link = link;
         this.linkName = linkName;

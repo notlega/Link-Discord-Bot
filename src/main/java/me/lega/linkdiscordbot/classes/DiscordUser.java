@@ -1,13 +1,13 @@
 package me.lega.linkdiscordbot.classes;
 
-public class DiscordUsers {
+public class DiscordUser {
 
     private int id;
     private int privilegeLevel;
     private long discordUserID;
     private String discordUserTag;
 
-    public DiscordUsers(int id, int privilegeLevel, long discordUserID, String discordUserTag) {
+    public DiscordUser(int id, int privilegeLevel, long discordUserID, String discordUserTag) {
         this.id = id;
         this.privilegeLevel = privilegeLevel;
         this.discordUserID = discordUserID;

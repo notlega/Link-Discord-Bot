@@ -1,13 +1,13 @@
 package me.lega.linkdiscordbot.classes;
 
-public class Commands {
+public class Command {
 
     private int id;
     private String command;
     private String commandSyntax;
     private String commandDescription;
 
-    public Commands(int id, String command, String commandSyntax, String commandDescription) {
+    public Command(int id, String command, String commandSyntax, String commandDescription) {
         this.id = id;
         this.command = command;
         this.commandSyntax = commandSyntax;

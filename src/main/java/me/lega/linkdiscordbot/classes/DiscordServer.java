@@ -1,12 +1,12 @@
 package me.lega.linkdiscordbot.classes;
 
-public class DiscordServers {
+public class DiscordServer {
 
     private int id;
     private long discordServerID;
     private String discordServerName;
 
-    public DiscordServers(int id, long discordServerID, String discordServerName) {
+    public DiscordServer(int id, long discordServerID, String discordServerName) {
         this.id = id;
         this.discordServerID = discordServerID;
         this.discordServerName = discordServerName;
