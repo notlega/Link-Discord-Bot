@@ -11,7 +11,11 @@ public class SuccessEmbed {
 
     }
 
-    public void SuccessEmbed(EmbedClass embedData, MessageReceivedEvent event) {
+    /**
+     * @param embedData Embed data
+     * @param event Message received event
+     */
+    public void successEmbed(EmbedClass embedData, MessageReceivedEvent event) {
 
         EmbedBuilder successEmbed = new EmbedBuilder();
 
