@@ -1,7 +1,7 @@
 package me.lega.linkdiscordbot.listeners;
 
 import me.lega.linkdiscordbot.classes.*;
-import me.lega.linkdiscordbot.database.GetAllCommands;
+import me.lega.linkdiscordbot.database.CommandDAO;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.lang.reflect.InvocationTargetException;
@@ -12,10 +12,10 @@ import java.util.Map;
 public class CommandHandler {
 
     private static final Map<String, String> commands = new HashMap<>();
-    private static final GetAllCommands getAllCommands = new GetAllCommands();
+    private static final CommandDAO commandDAO = new CommandDAO();
 
     public CommandHandler() {
-        for (Command allCommand : getAllCommands.getAllCommands()) {
+        for (Command allCommand : commandDAO.getAllCommands()) {
             commands.put(allCommand.getCommand(), allCommand.getCommand());
         }
     }

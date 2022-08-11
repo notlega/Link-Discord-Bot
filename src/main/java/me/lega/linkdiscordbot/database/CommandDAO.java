@@ -8,14 +8,15 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-public class GetAllCommands {
+public class CommandDAO {
 
-    public GetAllCommands() {
+    public CommandDAO() {
 
     }
 
     /**
      * Get all commands from the database
+     *
      * @return Array of commands
      */
     public Command[] getAllCommands() {
