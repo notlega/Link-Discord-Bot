@@ -6,7 +6,7 @@ public class CommandContainer {
 
     private final DiscordServer currentDiscordServer;
     private final DiscordUser currentDiscordUser;
-    private final Prefixes currentPrefix;
+    private final Prefix currentPrefix;
     private final String command;
     private final String contentOfCommand;
     private final MessageReceivedEvent event;
@@ -21,7 +21,7 @@ public class CommandContainer {
      * @param contentOfCommand     The content of the command (if there is any)
      * @param event                The event that triggered the command
      */
-    public CommandContainer(DiscordServer currentDiscordServer, DiscordUser currentDiscordUser, Prefixes currentPrefix, String command, String contentOfCommand, MessageReceivedEvent event) {
+    public CommandContainer(DiscordServer currentDiscordServer, DiscordUser currentDiscordUser, Prefix currentPrefix, String command, String contentOfCommand, MessageReceivedEvent event) {
         this.currentDiscordServer = currentDiscordServer;
         this.currentDiscordUser = currentDiscordUser;
         this.currentPrefix = currentPrefix;
@@ -38,7 +38,7 @@ public class CommandContainer {
         return currentDiscordUser;
     }
 
-    public Prefixes getCurrentPrefix() {
+    public Prefix getCurrentPrefix() {
         return currentPrefix;
     }
 

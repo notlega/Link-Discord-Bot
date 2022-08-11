@@ -2,7 +2,7 @@ package me.lega.linkdiscordbot;
 
 import me.lega.linkdiscordbot.classes.DiscordServer;
 import me.lega.linkdiscordbot.classes.DiscordUser;
-import me.lega.linkdiscordbot.classes.Prefixes;
+import me.lega.linkdiscordbot.classes.Prefix;
 import me.lega.linkdiscordbot.database.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -30,7 +30,7 @@ public class CommandListener extends ListenerAdapter {
 
         DiscordUser currentDiscordUser = getDiscordUser.getDiscordUser(event);
         DiscordServer currentDiscordServer = getDiscordServer.getDiscordServer(event);
-        Prefixes currentPrefix = getPrefix.getPrefix(currentDiscordServer);
+        Prefix currentPrefix = getPrefix.getPrefix(currentDiscordServer);
 
         // checks if message comes from server
         if (!event.isFromGuild()) {
@@ -60,7 +60,7 @@ public class CommandListener extends ListenerAdapter {
         // checks if prefix exists in database
         // if not, insert default prefix of ! into database
         if (getPrefix.getPrefix(currentDiscordServer) == null) {
-            insertPrefix.insertPrefix(currentDiscordServer, Prefixes.DEFAULT_PREFIX);
+            insertPrefix.insertPrefix(currentDiscordServer, Prefix.DEFAULT_PREFIX);
             currentPrefix = getPrefix.getPrefix(currentDiscordServer);
         }
         // checks if prefix is correct

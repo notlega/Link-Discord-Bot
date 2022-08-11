@@ -1,13 +1,13 @@
 package me.lega.linkdiscordbot.classes;
 
-public class Prefixes {
+public class Prefix {
 
     public static final String DEFAULT_PREFIX = "!";
     private int id;
     private String prefix;
     private int discordServerID;
 
-    public Prefixes(int id, String prefix, int discordServerID) {
+    public Prefix(int id, String prefix, int discordServerID) {
         this.id = id;
         this.prefix = prefix;
         this.discordServerID = discordServerID;

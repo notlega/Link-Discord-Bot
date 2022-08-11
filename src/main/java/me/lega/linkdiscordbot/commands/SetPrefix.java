@@ -19,7 +19,7 @@ public class SetPrefix {
         }
 
         if (commandContainer.getContentOfCommand().length() > 1) {
-            commandContainer.getEvent().getMessage().reply("Prefixes can only be one character long!").queue();
+            commandContainer.getEvent().getMessage().reply("Prefix can only be one character long!").queue();
             return;
         }
 

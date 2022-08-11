@@ -20,7 +20,7 @@ public class CommandHandler {
         }
     }
 
-    public CommandContainer parseCommand(DiscordServer currentDiscordServer, DiscordUser currentDiscordUser, Prefixes currentPrefix, MessageReceivedEvent event) {
+    public CommandContainer parseCommand(DiscordServer currentDiscordServer, DiscordUser currentDiscordUser, Prefix currentPrefix, MessageReceivedEvent event) {
 
         String noPrefix = event.getMessage().getContentRaw().replaceFirst(currentPrefix.getPrefix(), "");
         String command = noPrefix.substring(0, noPrefix.indexOf(" "));
