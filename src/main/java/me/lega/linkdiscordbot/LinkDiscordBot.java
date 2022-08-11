@@ -30,7 +30,6 @@ public class LinkDiscordBot {
                     .setRequestTimeoutRetry(true)
                     .addEventListeners(new CommandListener())
                     .build();
-
         } catch (LoginException e) {
             e.printStackTrace();
         }
