@@ -1,10 +1,12 @@
 package me.lega.linkdiscordbot;
 
-import me.lega.linkdiscordbot.classes.DiscordServers;
-import me.lega.linkdiscordbot.classes.DiscordUsers;
+import me.lega.linkdiscordbot.classes.DiscordServer;
+import me.lega.linkdiscordbot.classes.DiscordUser;
+import me.lega.linkdiscordbot.classes.Prefixes;
 import me.lega.linkdiscordbot.database.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.jetbrains.annotations.NotNull;
 
 public class CommandListener extends ListenerAdapter {
 
@@ -13,11 +15,22 @@ public class CommandListener extends ListenerAdapter {
     }
 
     @Override
-    public void onMessageReceived(MessageReceivedEvent event) {
+    public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
         CommandHandler commandHandler = new CommandHandler();
-        InsertDiscordUser insertDiscordUser = new InsertDiscordUser();
+
         InsertDiscordServer insertDiscordServer = new InsertDiscordServer();
+        GetDiscordServer getDiscordServer = new GetDiscordServer();
+
+        InsertDiscordUser insertDiscordUser = new InsertDiscordUser();
+        GetDiscordUser getDiscordUser = new GetDiscordUser();
+
+        InsertPrefix insertPrefix = new InsertPrefix();
+        GetPrefix getPrefix = new GetPrefix();
+
+        DiscordUser currentDiscordUser = getDiscordUser.getDiscordUser(event);
+        DiscordServer currentDiscordServer = getDiscordServer.getDiscordServer(event);
+        Prefixes currentPrefix = getPrefix.getPrefix(currentDiscordServer);
 
         // checks if message comes from server
         if (!event.isFromGuild()) {
@@ -32,23 +45,29 @@ public class CommandListener extends ListenerAdapter {
         if (event.getAuthor().isBot() || event.getAuthor().getIdLong() == 159985870458322944L) {
             return;
         }
-
-        DiscordUsers discordUsers = insertDiscordUser.insertDiscordUser(event);
-        GetDiscordServer getDiscordServer = new GetDiscordServer();
-        InsertPrefix insertPrefix = new InsertPrefix();
-        GetPrefix getPrefix = new GetPrefix();
-        if (getDiscordServer.GetDiscordServer(event) == null) {
-            insertDiscordServer.InsertDiscordServer(event);
+        // checks if discord server exists in database
+        // if not, insert discord server into database
+        if (currentDiscordServer == null) {
+            insertDiscordServer.insertDiscordServer(event);
+            currentDiscordServer = getDiscordServer.getDiscordServer(event);
         }
-        DiscordServers currentDiscordServer = getDiscordServer.GetDiscordServer(event);
-        if (getPrefix.GetPrefix(currentDiscordServer) == null) {
-            insertPrefix.InsertPrefix(currentDiscordServer, "!");
+        // checks if discord user exists in database
+        // if not, insert discord user into database
+        if (currentDiscordUser == null) {
+            insertDiscordUser.insertDiscordUser(event);
+            currentDiscordUser = getDiscordUser.getDiscordUser(event);
         }
-        String prefix = getPrefix.GetPrefix(currentDiscordServer).getPrefix();
-
+        // checks if prefix exists in database
+        // if not, insert default prefix of ! into database
+        if (getPrefix.getPrefix(currentDiscordServer) == null) {
+            insertPrefix.insertPrefix(currentDiscordServer, Prefixes.DEFAULT_PREFIX);
+            currentPrefix = getPrefix.getPrefix(currentDiscordServer);
+        }
         // checks if prefix is correct
-        if (event.getMessage().getContentRaw().startsWith(prefix)) {
-            commandHandler.handleCommand(discordUsers, commandHandler.parseCommand(event));
+        if (!event.getMessage().getContentRaw().startsWith(currentPrefix.getPrefix())) {
+            return;
         }
+
+        commandHandler.handleCommand(commandHandler.parseCommand(currentDiscordServer, currentDiscordUser, currentPrefix, event));
     }
 }

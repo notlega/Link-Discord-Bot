@@ -1,7 +1,6 @@
 package me.lega.linkdiscordbot;
 
 import io.github.cdimascio.dotenv.Dotenv;
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
@@ -19,11 +18,10 @@ public class LinkDiscordBot {
     public static void initialise() {
 
         Dotenv dotenv = Dotenv.configure().load();
-        JDA bot = null;
 
         try {
 
-            bot = JDABuilder.createDefault(dotenv.get("TOKEN"))
+            JDABuilder.createDefault(dotenv.get("TOKEN"))
                     .setAutoReconnect(true)
                     .enableCache(EnumSet.of(CacheFlag.VOICE_STATE))
                     .setStatus(OnlineStatus.ONLINE)

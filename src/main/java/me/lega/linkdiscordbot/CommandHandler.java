@@ -1,15 +1,11 @@
 package me.lega.linkdiscordbot;
 
-import me.lega.linkdiscordbot.classes.Commands;
-import me.lega.linkdiscordbot.classes.DiscordUsers;
+import me.lega.linkdiscordbot.classes.*;
 import me.lega.linkdiscordbot.database.GetAllCommands;
-import me.lega.linkdiscordbot.database.GetDiscordServer;
-import me.lega.linkdiscordbot.database.GetPrefix;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,44 +15,25 @@ public class CommandHandler {
     private static final GetAllCommands getAllCommands = new GetAllCommands();
 
     public CommandHandler() {
-        for (Commands allCommands : getAllCommands.GetAllCommands()) {
-            commands.put(allCommands.getCommand(), allCommands.getCommand());
+        for (Command allCommand : getAllCommands.getAllCommands()) {
+            commands.put(allCommand.getCommand(), allCommand.getCommand());
         }
     }
 
-    public Map<String, String> getCommands() {
-        return Collections.unmodifiableMap(commands);
-    }
+    public CommandContainer parseCommand(DiscordServer currentDiscordServer, DiscordUser currentDiscordUser, Prefixes currentPrefix, MessageReceivedEvent event) {
 
-    public CommandContainer parseCommand(MessageReceivedEvent event) {
+        String noPrefix = event.getMessage().getContentRaw().replaceFirst(currentPrefix.getPrefix(), "");
+        String command = noPrefix.substring(0, noPrefix.indexOf(" "));
+        String content = null;
 
-        GetDiscordServer getDiscordServer = new GetDiscordServer();
-        GetPrefix getPrefix = new GetPrefix();
-        String prefix = getPrefix.GetPrefix(getDiscordServer.GetDiscordServer(event)).getPrefix();
-
-        String noPrefix = event.getMessage().getContentRaw().replaceFirst("\\" + prefix, "");
-        String[] commandSplitContent = noPrefix.split(" ");
-        String command = "";
-        String[] content = new String[commandSplitContent.length - 1];
-
-        try {
-
-            command = commandSplitContent[0];
-
-            if (content.length == 0) {
-                content = null;
-            } else {
-                System.arraycopy(commandSplitContent, 1, content, 0, commandSplitContent.length - 1);
-            }
-
-        } catch (ArrayIndexOutOfBoundsException AIOOBE) {
-            return new CommandContainer(command, content, event);
+        if (noPrefix.contains(" ")) {
+            content = noPrefix.substring(noPrefix.indexOf(" ") + 1);
         }
 
-        return new CommandContainer(command, content, event);
+        return new CommandContainer(currentDiscordServer, currentDiscordUser, currentPrefix, command, content, event);
     }
 
-    public void handleCommand(DiscordUsers discordUsers, CommandContainer commandContainer) {
+    public void handleCommand(CommandContainer commandContainer) {
 
         try {
 
@@ -64,40 +41,32 @@ public class CommandHandler {
                 return;
             }
 
-            CommandHandler c = new CommandHandler();
-            Object o = null;
-
             if (commands.containsKey(commandContainer.getCommand())) {
 
-                String capitalisedCommand = commandContainer.getCommand().substring(0, 1).toUpperCase() + commandContainer.getCommand().substring(1);
-                Class<?> newClass = Class.forName(c.getClass().getPackage().getName() + ".commands." + capitalisedCommand);
-                Object newObject = newClass.newInstance();
-                Method[] allNewMethods = newClass.getDeclaredMethods();
+                try {
 
-                for (Method newMethod : allNewMethods) {
-                    String methodName = newMethod.getName();
-                    if (!methodName.startsWith(capitalisedCommand)) {
-                        continue;
-                    }
+                    Class<?> newClass = Class.forName(CommandHandler.class.getPackage().getName() + ".commands." + commandContainer.getCommand().substring(0, 1).toUpperCase() + commandContainer.getCommand().substring(1));
+                    Object newObject = newClass.getDeclaredConstructors()[0].newInstance(Object[].class);
+                    Method[] newMethodsArray = newClass.getDeclaredMethods();
 
-                    System.out.println("Invoking Method: " + methodName);
-                    try {
+                    for (Method newMethod : newMethodsArray) {
+                        String methodName = newMethod.getName();
+                        if (!methodName.startsWith(commandContainer.getCommand())) {
+                            continue;
+                        }
+
+                        System.out.println("Invoking Method: " + methodName);
                         newMethod.setAccessible(true);
-                        o = newMethod.invoke(newObject, discordUsers, commandContainer);
-                    } catch (InvocationTargetException ITE) {
-                        ITE.printStackTrace();
+                        newMethod.invoke(newObject, commandContainer);
                     }
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
                 }
             } else {
                 commandContainer.getEvent().getMessage().reply("The command " + commandContainer.getCommand() + " does not exist.").queue();
             }
-
-        } catch (ClassNotFoundException CNFE) {
-            CNFE.printStackTrace();
-        } catch (InstantiationException IE) {
-            IE.printStackTrace();
-        } catch (IllegalAccessException IAE) {
-            IAE.printStackTrace();
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
         }
     }
 }
