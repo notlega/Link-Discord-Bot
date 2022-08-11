@@ -23,7 +23,7 @@ public class CommandListener extends ListenerAdapter {
         if (!event.isFromGuild()) {
             return;
         }
-        // checks if its a member of the server who sent the message
+        // checks if it's a member of the server who sent the message
         // can import events.message.guild.GuildMessageReceivedEvent to remove this if statement
         if (event.getMember() == null) {
             return;

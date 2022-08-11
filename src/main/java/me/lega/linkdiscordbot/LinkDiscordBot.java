@@ -32,8 +32,8 @@ public class LinkDiscordBot {
                     .addEventListeners(new CommandListener())
                     .build();
 
-        } catch (LoginException LE) {
-            LE.printStackTrace();
+        } catch (LoginException e) {
+            e.printStackTrace();
         }
     }
 }
