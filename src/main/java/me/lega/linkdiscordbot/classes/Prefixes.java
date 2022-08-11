@@ -2,6 +2,7 @@ package me.lega.linkdiscordbot.classes;
 
 public class Prefixes {
 
+    public static final String DEFAULT_PREFIX = "!";
     private int id;
     private String prefix;
     private int discordServerID;
