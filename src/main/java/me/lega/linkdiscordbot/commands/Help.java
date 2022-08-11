@@ -1,8 +1,8 @@
 package me.lega.linkdiscordbot.commands;
 
-import me.lega.linkdiscordbot.CommandContainer;
-import me.lega.linkdiscordbot.classes.Commands;
-import me.lega.linkdiscordbot.classes.DiscordUsers;
+import me.lega.linkdiscordbot.classes.CommandContainer;
+import me.lega.linkdiscordbot.classes.Command;
+import me.lega.linkdiscordbot.classes.DiscordUser;
 import me.lega.linkdiscordbot.database.GetAllCommands;
 
 public class Help {
@@ -11,41 +11,33 @@ public class Help {
 
     }
 
-    public void Help(DiscordUsers discordUsers, CommandContainer commandContainer) {
+    public void help(DiscordUser discordUser, CommandContainer commandContainer) {
 
         GetAllCommands getAllCommands = new GetAllCommands();
-        Commands[] commands = getAllCommands.GetAllCommands();
-        String helpOutput = "";
+        Command[] commands = getAllCommands.getAllCommands();
+        StringBuilder output = new StringBuilder();
 
         if (commandContainer.getContentOfCommand() == null) {
-            helpOutput = "Use !help <command> to search that specific command!\n\n";
+            output.append("Use !help <command> to search for that specific command!\n\n");
 
-            for (Commands command : commands) {
-                helpOutput += command.getCommandSyntax() + ": ";
-                helpOutput += command.getCommandDescription() + "\n";
+            for (Command command : commands) {
+                output.append(command.getCommandSyntax()).append(": ").append(command.getCommandDescription()).append("\n");
             }
-            commandContainer.getEvent().getMessage().reply(helpOutput).queue();
+            commandContainer.getEvent().getMessage().reply(output.toString()).queue();
 
         } else {
-            for (Commands command : commands) {
-                if (!command.getCommand().equals(commandContainer.getContentOfCommand()[0])) {
+            for (Command command : commands) {
+                if (!command.getCommand().equals(commandContainer.getContentOfCommand())) {
                     continue;
                 }
-                helpOutput += command.getCommandSyntax() + ": ";
-                helpOutput += command.getCommandDescription() + "\t";
+
+                output.append(command.getCommandSyntax()).append(": ").append(command.getCommandDescription()).append("\t");
             }
-            commandContainer.getEvent().getMessage().reply(helpOutput).queue();
+            commandContainer.getEvent().getMessage().reply(output.toString()).queue();
         }
 
-        if (helpOutput.equals("")) {
-            String invalidCommand = "";
-            for (int i = 0; i < commandContainer.getContentOfCommand().length - 1; i++) {
-                invalidCommand += commandContainer.getContentOfCommand()[i];
-                if (i != commandContainer.getContentOfCommand().length - 2) {
-                    invalidCommand += " ";
-                }
-            }
-            commandContainer.getEvent().getMessage().reply(invalidCommand + " is not a valid command!").queue();
+        if (output.toString().equals("")) {
+            commandContainer.getEvent().getMessage().reply(commandContainer.getContentOfCommand() + " is not a valid command!").queue();
         }
     }
 }
