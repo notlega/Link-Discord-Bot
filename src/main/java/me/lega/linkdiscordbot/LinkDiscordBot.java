@@ -1,6 +1,7 @@
 package me.lega.linkdiscordbot;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import me.lega.linkdiscordbot.listeners.CommandListener;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;

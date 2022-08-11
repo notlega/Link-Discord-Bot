@@ -1,4 +1,4 @@
-package me.lega.linkdiscordbot;
+package me.lega.linkdiscordbot.listeners;
 
 import me.lega.linkdiscordbot.classes.*;
 import me.lega.linkdiscordbot.database.GetAllCommands;
