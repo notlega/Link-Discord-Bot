@@ -1,5 +1,8 @@
-package me.lega.linkdiscordbot.classes;
+package me.lega.linkdiscordbot.listeners;
 
+import me.lega.linkdiscordbot.classes.DiscordServer;
+import me.lega.linkdiscordbot.classes.DiscordUser;
+import me.lega.linkdiscordbot.classes.Prefix;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class CommandContainer {

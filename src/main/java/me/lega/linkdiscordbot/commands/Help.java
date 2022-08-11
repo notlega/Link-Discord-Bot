@@ -1,6 +1,6 @@
 package me.lega.linkdiscordbot.commands;
 
-import me.lega.linkdiscordbot.classes.CommandContainer;
+import me.lega.linkdiscordbot.listeners.CommandContainer;
 import me.lega.linkdiscordbot.classes.Command;
 import me.lega.linkdiscordbot.classes.DiscordUser;
 import me.lega.linkdiscordbot.database.GetAllCommands;

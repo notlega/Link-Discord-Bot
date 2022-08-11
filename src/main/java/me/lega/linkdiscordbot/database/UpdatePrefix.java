@@ -1,7 +1,7 @@
 package me.lega.linkdiscordbot.database;
 
 import io.github.cdimascio.dotenv.Dotenv;
-import me.lega.linkdiscordbot.classes.CommandContainer;
+import me.lega.linkdiscordbot.listeners.CommandContainer;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
