@@ -16,7 +16,6 @@ public class CommandDAO {
 
     /**
      * Get all commands from the database
-     *
      * @return Array of commands
      */
     public Command[] getAllCommands() {

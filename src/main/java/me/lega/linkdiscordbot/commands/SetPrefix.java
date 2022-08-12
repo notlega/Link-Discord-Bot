@@ -1,7 +1,7 @@
 package me.lega.linkdiscordbot.commands;
 
+import me.lega.linkdiscordbot.database.PrefixDAO;
 import me.lega.linkdiscordbot.listeners.CommandContainer;
-import me.lega.linkdiscordbot.database.UpdatePrefix;
 
 public class SetPrefix {
 
@@ -11,7 +11,7 @@ public class SetPrefix {
 
     public void setPrefix(CommandContainer commandContainer) {
 
-        UpdatePrefix updatePrefix = new UpdatePrefix();
+        PrefixDAO prefixDAO = new PrefixDAO();
 
         if (commandContainer.getContentOfCommand() == null) {
             commandContainer.getEvent().getMessage().reply("You need to specify a prefix!").queue();
@@ -28,7 +28,7 @@ public class SetPrefix {
             return;
         }
 
-        int numRowAffected = updatePrefix.updatePrefix(commandContainer);
+        int numRowAffected = prefixDAO.updatePrefix(commandContainer);
 
         if (numRowAffected > 0) {
             commandContainer.getEvent().getMessage().reply("Prefix has been changed to <" + commandContainer.getContentOfCommand() + "> !").queue();

@@ -25,12 +25,11 @@ public class CommandListener extends ListenerAdapter {
         InsertDiscordUser insertDiscordUser = new InsertDiscordUser();
         GetDiscordUser getDiscordUser = new GetDiscordUser();
 
-        InsertPrefix insertPrefix = new InsertPrefix();
-        GetPrefix getPrefix = new GetPrefix();
+        PrefixDAO prefixDAO = new PrefixDAO();
 
         DiscordUser currentDiscordUser = getDiscordUser.getDiscordUser(event);
         DiscordServer currentDiscordServer = getDiscordServer.getDiscordServer(event);
-        Prefix currentPrefix = getPrefix.getPrefix(currentDiscordServer);
+        Prefix currentPrefix = prefixDAO.getPrefix(currentDiscordServer);
 
         // checks if message comes from server
         if (!event.isFromGuild()) {
@@ -59,9 +58,9 @@ public class CommandListener extends ListenerAdapter {
         }
         // checks if prefix exists in database
         // if not, insert default prefix of ! into database
-        if (getPrefix.getPrefix(currentDiscordServer) == null) {
-            insertPrefix.insertPrefix(currentDiscordServer, Prefix.DEFAULT_PREFIX);
-            currentPrefix = getPrefix.getPrefix(currentDiscordServer);
+        if (currentPrefix == null) {
+            prefixDAO.insertPrefix(currentDiscordServer, Prefix.DEFAULT_PREFIX);
+            currentPrefix = prefixDAO.getPrefixByDiscordServerId(currentDiscordServer);
         }
         // checks if prefix is correct
         if (!event.getMessage().getContentRaw().startsWith(currentPrefix.getPrefix())) {
