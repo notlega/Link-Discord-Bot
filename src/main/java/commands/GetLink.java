@@ -1,7 +1,6 @@
 package commands;
 
-import listeners.CommandContainer;
-import classes.Link;
+import records.CommandContainer;
 import database.GetLinksByLinkName;
 
 public class GetLink {

@@ -1,7 +1,7 @@
 package database;
 
 import io.github.cdimascio.dotenv.Dotenv;
-import classes.Link;
+import records.Link;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -16,7 +16,6 @@ public class GetLinksByLinkName {
 
     public Link getLinksByLinkName(String linkName, String link) {
 
-        Link linkClass = new Link();
         Dotenv dotenv = Dotenv.configure().load();
         Link links = null;
 
@@ -39,7 +38,7 @@ public class GetLinksByLinkName {
                 // Execute SQL query
                 ps = conn.prepareStatement(getLinkQuery, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
                 ps.setString(1, linkName);
-            } else if (linkClass.getLINK_PATTERN().matcher(link).find()) {
+            } else if (Link.LINK_PATTERN.matcher(link).find()) {
                 getLinkQuery = "SELECT * FROM links WHERE link = ?;";
 
                 // Execute SQL query

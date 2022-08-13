@@ -1,8 +1,8 @@
 package listeners;
 
-import classes.DiscordServer;
-import classes.DiscordUser;
-import classes.Prefix;
+import records.DiscordServer;
+import records.DiscordUser;
+import records.Prefix;
 import database.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;

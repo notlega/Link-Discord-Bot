@@ -1,6 +1,6 @@
 package database;
 
-import classes.DiscordServer;
+import records.DiscordServer;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 

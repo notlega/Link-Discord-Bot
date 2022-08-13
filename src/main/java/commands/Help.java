@@ -1,8 +1,6 @@
 package commands;
 
-import records.Command;
-import database.CommandDAO;
-import listeners.CommandContainer;
+import records.CommandContainer;
 
 public class Help {
 

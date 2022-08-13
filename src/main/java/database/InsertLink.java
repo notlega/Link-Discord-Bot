@@ -1,7 +1,7 @@
 package database;
 
 import io.github.cdimascio.dotenv.Dotenv;
-import classes.DiscordUser;
+import records.DiscordUser;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

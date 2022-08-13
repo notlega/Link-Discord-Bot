@@ -1,6 +1,6 @@
 package embeds;
 
-import classes.EmbedClass;
+import records.EmbedClass;
 import classes.EmbedField;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -19,16 +19,16 @@ public class SuccessEmbed {
 
         EmbedBuilder successEmbed = new EmbedBuilder();
 
-        successEmbed.setColor(embedData.getColor());
-        for (EmbedField field : embedData.getField()) {
+        successEmbed.setColor(embedData.Color());
+        for (EmbedField field : embedData.Field()) {
             successEmbed.addField(field.getName(), field.getValue(), field.isInline());
         }
-        successEmbed.setFooter(embedData.getFooter());
-        if (embedData.getImage() != null) {
-            successEmbed.setImage(embedData.getImage());
+        successEmbed.setFooter(embedData.Footer());
+        if (embedData.Image() != null) {
+            successEmbed.setImage(embedData.Image());
         }
-        successEmbed.setTimestamp(embedData.getTimestamp());
-        successEmbed.setTitle(embedData.getTitle());
+        successEmbed.setTimestamp(embedData.Timestamp());
+        successEmbed.setTitle(embedData.Title());
 
         event.getMessage().replyEmbeds(successEmbed.build()).queue();
     }

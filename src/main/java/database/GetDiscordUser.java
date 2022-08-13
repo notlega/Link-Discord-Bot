@@ -1,7 +1,7 @@
 package database;
 
 import io.github.cdimascio.dotenv.Dotenv;
-import classes.DiscordUser;
+import records.DiscordUser;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.sql.Connection;

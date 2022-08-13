@@ -1,9 +1,9 @@
 package database;
 
 import io.github.cdimascio.dotenv.Dotenv;
-import classes.DiscordServer;
-import classes.Prefix;
-import listeners.CommandContainer;
+import records.DiscordServer;
+import records.Prefix;
+import records.CommandContainer;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

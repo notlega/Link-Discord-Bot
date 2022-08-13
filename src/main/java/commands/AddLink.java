@@ -1,9 +1,9 @@
 package commands;
 
-import listeners.CommandContainer;
-import classes.EmbedClass;
+import records.CommandContainer;
+import records.EmbedClass;
 import classes.EmbedField;
-import classes.Link;
+import records.Link;
 import database.GetLinksByLinkName;
 import database.InsertLink;
 import embeds.SuccessEmbed;
@@ -22,11 +22,9 @@ public class AddLink {
         EmbedClass newEmbed;
         EmbedField[] newEmbedField;
         SuccessEmbed successEmbed = new SuccessEmbed();
-        Link link = new Link();
-        Link linkClass;
         String[] splitContent = commandContainer.getContentOfCommand().split(" ");
 
-        if (!link.getLINK_PATTERN().matcher(splitContent[splitContent.length - 1]).find()) {
+        if (!Link.LINK_PATTERN.matcher(splitContent[splitContent.length - 1]).find()) {
             commandContainer.getEvent().getMessage().reply("No valid link found.").queue();
             return;
         }
@@ -41,12 +39,12 @@ public class AddLink {
 
         GetLinksByLinkName getLink = new GetLinksByLinkName();
         InsertLink insertLink = new InsertLink();
-        linkClass = getLink.getLink(linkName.toString(), splitContent[splitContent.length - 1]);
+        Link link = getLink.getLinksByLinkName(linkName.toString(), splitContent[splitContent.length - 1]);
 
-        if (linkClass == null) {
+        if (link == null) {
 
             insertLink.insertLink(commandContainer.getCurrentDiscordUser(), linkName.toString(), splitContent[splitContent.length - 1]);
-            linkClass = getLink.getLink(linkName.toString(), splitContent[splitContent.length - 1]);
+            link = getLink.getLinksByLinkName(linkName.toString(), splitContent[splitContent.length - 1]);
             newEmbedField = new EmbedField[2];
             newEmbedField[0] = new EmbedField("Link Name", linkClass.getLinkName(), false);
             newEmbedField[1] = new EmbedField("Link", linkClass.getLink(), false);
