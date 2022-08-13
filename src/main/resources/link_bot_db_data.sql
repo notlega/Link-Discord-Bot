@@ -18,16 +18,6 @@ USE `link_bot_db`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Dumping data for table `commands`
---
-
-LOCK TABLES `commands` WRITE;
-/*!40000 ALTER TABLE `commands` DISABLE KEYS */;
-INSERT INTO `commands` VALUES (1,'help','help','SOS for commands. Displays all commands and command descriptions.'),(2,'addLink','addLink <Link Name> <Link>','Allows a user to insert a link and name the link in the database.'),(3,'stopBot','stopBot','[OWNER] Stops the whole bot. Literally.'),(4,'setPrefix','setPrefix <New Prefix>','Sets a new prefix for the sever the command was called in.'),(5,'getLink','getLink <Link Name>','Allows a user to retrive an inserted link under their discord tag.');
-/*!40000 ALTER TABLE `commands` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Dumping data for table `discord_servers`
 --
 
@@ -86,4 +76,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-08-12  0:50:55
+-- Dump completed on 2022-08-13 20:57:20
