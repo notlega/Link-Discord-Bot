@@ -19,8 +19,7 @@ public class CommandListener extends ListenerAdapter {
 
         CommandHandler commandHandler = new CommandHandler();
 
-        InsertDiscordServer insertDiscordServer = new InsertDiscordServer();
-        GetDiscordServer getDiscordServer = new GetDiscordServer();
+        DiscordServerDAO discordServerDAO = new DiscordServerDAO();
 
         InsertDiscordUser insertDiscordUser = new InsertDiscordUser();
         GetDiscordUser getDiscordUser = new GetDiscordUser();
@@ -28,7 +27,7 @@ public class CommandListener extends ListenerAdapter {
         PrefixDAO prefixDAO = new PrefixDAO();
 
         DiscordUser currentDiscordUser = getDiscordUser.getDiscordUser(event);
-        DiscordServer currentDiscordServer = getDiscordServer.getDiscordServer(event);
+        DiscordServer currentDiscordServer = discordServerDAO.getDiscordServerByDiscordServerId(event);
         Prefix currentPrefix = prefixDAO.getPrefixByDiscordServerId(currentDiscordServer);
 
         // checks if message comes from server
@@ -47,8 +46,8 @@ public class CommandListener extends ListenerAdapter {
         // checks if discord server exists in database
         // if not, insert discord server into database
         if (currentDiscordServer == null) {
-            insertDiscordServer.insertDiscordServer(event);
-            currentDiscordServer = getDiscordServer.getDiscordServer(event);
+            discordServerDAO.insertDiscordServer(event);
+            currentDiscordServer = discordServerDAO.getDiscordServerByDiscordServerId(event);
         }
         // checks if discord user exists in database
         // if not, insert discord user into database

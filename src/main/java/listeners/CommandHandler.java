@@ -3,6 +3,7 @@ package listeners;
 import classes.*;
 import database.CommandDAO;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import records.Command;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -15,7 +16,7 @@ public class CommandHandler {
     private static final CommandDAO commandDAO = new CommandDAO();
 
     public CommandHandler() {
-        for (Command allCommand : commandDAO.getAllCommands()) {
+        for (Command allCommand : commandDAO.getAllCommands.Query()) {
             commands.put(allCommand.getCommand(), allCommand.getCommand());
         }
     }

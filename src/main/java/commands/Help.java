@@ -1,6 +1,6 @@
 package commands;
 
-import classes.Command;
+import records.Command;
 import database.CommandDAO;
 import listeners.CommandContainer;
 
