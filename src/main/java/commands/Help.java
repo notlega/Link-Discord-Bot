@@ -1,6 +1,10 @@
 package commands;
 
+import listeners.CommandHandler;
 import records.CommandContainer;
+
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Help {
 
@@ -10,28 +14,28 @@ public class Help {
 
     public void help(CommandContainer commandContainer) {
 
-        CommandDAO commandDAO = new CommandDAO();
-        Command[] commands = commandDAO.getAllCommands();
-        StringBuilder output = new StringBuilder();
+        String output;
 
-        if (output.toString().equals("")) {
-            commandContainer.getEvent().getMessage().reply(commandContainer.getContentOfCommand() + " is not a valid command!").queue();
-        } else if (commandContainer.getContentOfCommand() == null) {
-            output.append("Use !help <command> to search for that specific command!\n\n");
-            for (Command command : commands) {
-                output.append(command.getCommandSyntax()).append(": ").append(command.getCommandDescription()).append("\n");
-            }
-
-            commandContainer.getEvent().getMessage().reply(output.toString()).queue();
+        if (commandContainer.contentOfCommand() == null) {
+            output = CommandHandler.getCommands()
+                    .values()
+                    .stream()
+                    .map(clazz -> clazz.getSimpleName().substring(0, 1).toLowerCase() + clazz.getSimpleName().substring(1) + ": " + clazz.getSimpleName() + "\n")
+                    .collect(Collectors.joining("", "Use !help <command> to search for that specific command!\n\n", ""));
         } else {
-            for (Command command : commands) {
-                if (!command.getCommand().equals(commandContainer.getContentOfCommand())) {
-                    continue;
-                }
-
-                output.append(command.getCommandSyntax()).append(": ").append(command.getCommandDescription()).append("\t");
-            }
-            commandContainer.getEvent().getMessage().reply(output.toString()).queue();
+            output = CommandHandler.getCommands()
+                    .keySet()
+                    .stream()
+                    .filter(className -> Objects.equals(className, commandContainer.contentOfCommand().substring(0, 1).toUpperCase() + commandContainer.command().substring(1)))
+                    .map(className -> className + ": " + className + "\n")
+                    .collect(Collectors.joining("", "", ""));
         }
+
+        if (output.equals("")) {
+            commandContainer.event().getMessage().reply(commandContainer.command() + " is not a valid command!").queue();
+            return;
+        }
+
+        commandContainer.event().getMessage().reply(output).queue();
     }
 }
