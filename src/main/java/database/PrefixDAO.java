@@ -39,7 +39,7 @@ public class PrefixDAO {
             // Execute SQL Query
             PreparedStatement ps = conn.prepareStatement(insertImageLink);
             ps.setString(1, prefix);
-            ps.setLong(2, discordServer.getId());
+            ps.setLong(2, discordServer.id());
             ps.executeUpdate();
 
             // Close connection
@@ -68,11 +68,11 @@ public class PrefixDAO {
             Connection conn = DriverManager.getConnection(dotenv.get("DB_URI"), dotenv.get("SQLUser"), dotenv.get("SQLPassword"));
 
             // SQL query string
-            String getDiscordServerQuery = "SELECT * FROM prefix WHERE discord_server_id = ?;";
+            String getDiscordServerQuery = "SELECT * FROM link_bot_db.prefixes WHERE discord_server_id = ?;";
 
             // Execute SQL query
             PreparedStatement ps = conn.prepareStatement(getDiscordServerQuery, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            ps.setInt(1, discordServer.getId());
+            ps.setInt(1, discordServer.id());
 
             ResultSet rs = ps.executeQuery();
 
@@ -113,8 +113,8 @@ public class PrefixDAO {
 
             // Execute SQL Query
             PreparedStatement ps = conn.prepareStatement(updateImageLink);
-            ps.setString(1, commandContainer.getContentOfCommand());
-            ps.setLong(2, commandContainer.getCurrentDiscordServer().getDiscordServerID());
+            ps.setString(1, commandContainer.contentOfCommand());
+            ps.setLong(2, commandContainer.currentDiscordServer().discordServerID());
             numRowsAffected = ps.executeUpdate();
 
             // Close connection

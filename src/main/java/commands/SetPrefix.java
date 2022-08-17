@@ -13,27 +13,27 @@ public class SetPrefix {
 
         PrefixDAO prefixDAO = new PrefixDAO();
 
-        if (commandContainer.getContentOfCommand() == null) {
-            commandContainer.getEvent().getMessage().reply("You need to specify a prefix!").queue();
+        if (commandContainer.contentOfCommand() == null) {
+            commandContainer.event().getMessage().reply("You need to specify a prefix!").queue();
             return;
         }
 
-        if (commandContainer.getContentOfCommand().length() > 1) {
-            commandContainer.getEvent().getMessage().reply("Prefix can only be one character long!").queue();
+        if (commandContainer.contentOfCommand().length() > 1) {
+            commandContainer.event().getMessage().reply("Prefix can only be one character long!").queue();
             return;
         }
 
-        if (commandContainer.getCurrentPrefix().getPrefix().equals(commandContainer.getContentOfCommand())) {
-            commandContainer.getEvent().getMessage().reply("That prefix is already set!").queue();
+        if (commandContainer.currentPrefix().prefix().equals(commandContainer.contentOfCommand())) {
+            commandContainer.event().getMessage().reply("That prefix is already set!").queue();
             return;
         }
 
         int numRowAffected = prefixDAO.updatePrefix(commandContainer);
 
         if (numRowAffected > 0) {
-            commandContainer.getEvent().getMessage().reply("Prefix has been changed to <" + commandContainer.getContentOfCommand() + "> !").queue();
+            commandContainer.event().getMessage().reply("Prefix has been changed to <" + commandContainer.contentOfCommand() + "> !").queue();
         } else if (numRowAffected == 0) {
-            commandContainer.getEvent().getMessage().reply("Something went wrong!").queue();
+            commandContainer.event().getMessage().reply("Something went wrong!").queue();
         }
     }
 }

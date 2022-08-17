@@ -1,12 +1,15 @@
 package listeners;
 
-import records.DiscordServer;
-import records.DiscordUser;
-import records.Prefix;
-import database.*;
+import database.DiscordServerDAO;
+import database.GetDiscordUser;
+import database.InsertDiscordUser;
+import database.PrefixDAO;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
+import records.DiscordServer;
+import records.DiscordUser;
+import records.Prefix;
 
 public class CommandListener extends ListenerAdapter {
 
@@ -35,7 +38,6 @@ public class CommandListener extends ListenerAdapter {
             return;
         }
         // checks if it's a member of the server who sent the message
-        // can import events.message.guild.GuildMessageReceivedEvent to remove this if statement
         if (event.getMember() == null) {
             return;
         }
@@ -45,9 +47,12 @@ public class CommandListener extends ListenerAdapter {
         }
         // checks if discord server exists in database
         // if not, insert discord server into database
+        // insert default prefix into database
         if (currentDiscordServer == null) {
             discordServerDAO.insertDiscordServer(event);
             currentDiscordServer = discordServerDAO.getDiscordServerByDiscordServerId(event);
+            prefixDAO.insertPrefix(currentDiscordServer, Prefix.DEFAULT_PREFIX);
+            currentPrefix = prefixDAO.getPrefixByDiscordServerId(currentDiscordServer);
         }
         // checks if discord user exists in database
         // if not, insert discord user into database
@@ -55,14 +60,8 @@ public class CommandListener extends ListenerAdapter {
             insertDiscordUser.insertDiscordUser(event);
             currentDiscordUser = getDiscordUser.getDiscordUser(event);
         }
-        // checks if prefix exists in database
-        // if not, insert default prefix of ! into database
-        if (currentPrefix == null) {
-            prefixDAO.insertPrefix(currentDiscordServer, Prefix.DEFAULT_PREFIX);
-            currentPrefix = prefixDAO.getPrefixByDiscordServerId(currentDiscordServer);
-        }
         // checks if prefix is correct
-        if (!event.getMessage().getContentRaw().startsWith(currentPrefix.getPrefix())) {
+        if (!event.getMessage().getContentRaw().startsWith(currentPrefix.prefix())) {
             return;
         }
 

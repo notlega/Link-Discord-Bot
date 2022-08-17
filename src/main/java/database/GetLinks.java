@@ -1,6 +1,7 @@
 package database;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import records.Link;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

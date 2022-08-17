@@ -34,7 +34,7 @@ public class InsertLink {
             PreparedStatement ps = conn.prepareStatement(insertImageLink);
             ps.setString(1, link);
             ps.setString(2, linkName);
-            ps.setLong(3, currentDiscordUser.getId());
+            ps.setLong(3, currentDiscordUser.id());
             numRowsAffected = ps.executeUpdate();
 
             // Close connection

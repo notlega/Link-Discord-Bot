@@ -66,11 +66,11 @@ public abstract class SQLQuery<T> {
     }
 
     public ArrayList<T> Query(Connection connection) {
-        return Query(connection, new String[] {});
+        return Query(connection, new String[]{});
     }
 
     public T QuerySingle(Connection connection) {
-        return QuerySingle(connection, new String[] {});
+        return QuerySingle(connection, new String[]{});
     }
 
     protected abstract T ParseResult(ResultSet resultSet) throws SQLException;

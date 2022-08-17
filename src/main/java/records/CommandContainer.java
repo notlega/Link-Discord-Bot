@@ -1,8 +1,5 @@
 package records;
 
-import records.DiscordServer;
-import records.DiscordUser;
-import records.Prefix;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 /**
