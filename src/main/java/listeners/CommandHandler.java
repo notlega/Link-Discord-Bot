@@ -5,6 +5,7 @@ import records.CommandContainer;
 import records.DiscordServer;
 import records.DiscordUser;
 import records.Prefix;
+import util.Capitalisation;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -68,7 +69,7 @@ public class CommandHandler {
 
         try {
 
-            Class<?> commandClass = commands.get(commandContainer.command().substring(0, 1).toUpperCase() + commandContainer.command().substring(1));
+            Class<?> commandClass = commands.get(Capitalisation.capitalise(commandContainer.command()));
 
             if (commandClass == null) {
                 commandContainer.event().getMessage().reply("The command " + commandContainer.command() + " does not exist.").queue();
