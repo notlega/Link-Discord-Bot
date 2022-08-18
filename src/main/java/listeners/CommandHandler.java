@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -79,16 +80,18 @@ public class CommandHandler {
             Object newObject = commandClass.getDeclaredConstructors()[0].newInstance();
             Method[] newMethodsArray = commandClass.getDeclaredMethods();
 
-            for (Method newMethod : newMethodsArray) {
-                String methodName = newMethod.getName();
-                if (!methodName.startsWith(commandContainer.command())) {
-                    continue;
-                }
+            Method newMethod = Arrays.stream(newMethodsArray)
+                    .filter(method -> method.getName().startsWith(commandContainer.command()))
+                    .findFirst()
+                    .orElse(null);
 
-                System.out.println("Invoking Method: " + methodName);
-                newMethod.setAccessible(true);
-                newMethod.invoke(newObject, commandContainer);
+            if (newMethod == null) {
+                return;
             }
+
+            System.out.println("Invoking Method: " + newMethod.getName());
+            newMethod.setAccessible(true);
+            newMethod.invoke(newObject, commandContainer);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
