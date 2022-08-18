@@ -49,11 +49,18 @@ public abstract class SQLQuery<T> {
     }
 
     public T QuerySingle(Connection connection, String[] parameters) {
+
+        if (query.startsWith("SELECT")) {
+            int resultSet;
+        } else {
+            return null;
+        }
         ResultSet resultSet = getResultSet(connection, parameters);
 
         if (resultSet == null) {
             return null;
         }
+
         try {
             if (resultSet.next()) {
                 return ParseResult(resultSet);
