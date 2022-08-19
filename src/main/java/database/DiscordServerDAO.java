@@ -1,6 +1,7 @@
 package database;
 
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
+import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import records.DiscordServer;
 import util.LoadSQLDriver;
@@ -56,5 +57,25 @@ public class DiscordServerDAO {
         }
 
         return null;
+    }
+
+    public void deleteDiscordServer(GuildLeaveEvent event) {
+        try {
+            Connection connection = LoadSQLDriver.loadSQLDriver();
+            SQLQuery<Integer> sqlQuery = new SQLQuery<>("INSERT INTO discord_servers (discord_server_id, discord_server_name) VALUES (?, ?);") {
+
+                @Override
+                public Integer parseResult(ResultSet resultSet, int numRowsModified) {
+                    return numRowsModified;
+                }
+            };
+
+            sqlQuery.querySingle(connection, new String[]{String.valueOf(event.getGuild().getIdLong()), event.getGuild().getName()});
+
+            // close connection
+            connection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
