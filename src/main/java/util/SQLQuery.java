@@ -8,93 +8,93 @@ import java.util.ArrayList;
 
 public abstract class SQLQuery<T> {
 
-    private final String query;
+	private final String query;
 
-    public SQLQuery(String query) {
-        this.query = query;
-    }
+	public SQLQuery(String query) {
+		this.query = query;
+	}
 
-    private int getNumRowsModified(Connection connection, String[] parameters) {
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            for (int i = 0; i < parameters.length; i++) {
-                preparedStatement.setString(i + 1, parameters[i]);
-            }
+	private int getNumRowsModified(Connection connection, String[] parameters) {
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			for (int i = 0; i < parameters.length; i++) {
+				preparedStatement.setString(i + 1, parameters[i]);
+			}
 
-            return preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+			return preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
-        return 0;
-    }
+		return 0;
+	}
 
-    private ResultSet getResultSet(Connection connection, String[] parameters) {
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            for (int i = 0; i < parameters.length; i++) {
-                preparedStatement.setString(i + 1, parameters[i]);
-            }
+	private ResultSet getResultSet(Connection connection, String[] parameters) {
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			for (int i = 0; i < parameters.length; i++) {
+				preparedStatement.setString(i + 1, parameters[i]);
+			}
 
-            return preparedStatement.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+			return preparedStatement.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    public ArrayList<T> query(Connection connection, String[] parameters) {
-        ResultSet resultSet = getResultSet(connection, parameters);
-        ArrayList<T> results = new ArrayList<>();
+	public ArrayList<T> query(Connection connection, String[] parameters) {
+		ResultSet resultSet = getResultSet(connection, parameters);
+		ArrayList<T> results = new ArrayList<>();
 
-        if (resultSet == null) {
-            return null;
-        }
+		if (resultSet == null) {
+			return null;
+		}
 
-        try {
-            while (resultSet.next()) {
-                results.add(parseResult(resultSet, 0));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+		try {
+			while (resultSet.next()) {
+				results.add(parseResult(resultSet, 0));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
-        return results;
-    }
+		return results;
+	}
 
-    public T querySingle(Connection connection, String[] parameters) {
-        ResultSet resultSet = null;
-        int numRowsModified = 0;
+	public T querySingle(Connection connection, String[] parameters) {
+		ResultSet resultSet = null;
+		int numRowsModified = 0;
 
-        if (!query.startsWith("SELECT")) {
-            numRowsModified = getNumRowsModified(connection, parameters);
-        } else {
-            resultSet = getResultSet(connection, parameters);
-        }
+		if (!query.startsWith("SELECT")) {
+			numRowsModified = getNumRowsModified(connection, parameters);
+		} else {
+			resultSet = getResultSet(connection, parameters);
+		}
 
-        if (resultSet == null) {
-            return null;
-        }
+		if (resultSet == null) {
+			return null;
+		}
 
-        try {
-            if (resultSet.next()) {
-                return parseResult(resultSet, numRowsModified);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+		try {
+			if (resultSet.next()) {
+				return parseResult(resultSet, numRowsModified);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    public ArrayList<T> query(Connection connection) {
-        return query(connection, new String[]{});
-    }
+	public ArrayList<T> query(Connection connection) {
+		return query(connection, new String[]{});
+	}
 
-    public T querySingle(Connection connection) {
-        return querySingle(connection, new String[]{});
-    }
+	public T querySingle(Connection connection) {
+		return querySingle(connection, new String[]{});
+	}
 
-    protected abstract T parseResult(ResultSet resultSet, int numRowsModified) throws SQLException;
+	protected abstract T parseResult(ResultSet resultSet, int numRowsModified) throws SQLException;
 }

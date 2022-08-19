@@ -1,7 +1,7 @@
 import io.github.cdimascio.dotenv.Dotenv;
 import listeners.CommandHandler;
-import listeners.MessageEventListener;
 import listeners.GuildEventListener;
+import listeners.MessageEventListener;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
@@ -12,23 +12,23 @@ import java.util.EnumSet;
 
 public class LinkDiscordBot {
 
-    public static void main(String[] args) throws LoginException {
-        initialise();
-    }
+	public static void main(String[] args) throws LoginException {
+		initialise();
+	}
 
-    public static void initialise() throws LoginException {
+	public static void initialise() throws LoginException {
 
-        Dotenv dotenv = Dotenv.configure().load();
-        CommandHandler.initialiseCommands();
+		Dotenv dotenv = Dotenv.configure().load();
+		CommandHandler.initialiseCommands();
 
-        JDABuilder.createDefault(dotenv.get("TOKEN"))
-                .setAutoReconnect(true)
-                .enableCache(EnumSet.of(CacheFlag.VOICE_STATE))
-                .setStatus(OnlineStatus.ONLINE)
-                .setActivity(Activity.playing("with waifus"))
-                .setRequestTimeoutRetry(true)
-                .addEventListeners(new MessageEventListener())
-                .addEventListeners(new GuildEventListener())
-                .build();
-    }
+		JDABuilder.createDefault(dotenv.get("TOKEN"))
+				.setAutoReconnect(true)
+				.enableCache(EnumSet.of(CacheFlag.VOICE_STATE))
+				.setStatus(OnlineStatus.ONLINE)
+				.setActivity(Activity.playing("with waifus"))
+				.setRequestTimeoutRetry(true)
+				.addEventListeners(new MessageEventListener())
+				.addEventListeners(new GuildEventListener())
+				.build();
+	}
 }

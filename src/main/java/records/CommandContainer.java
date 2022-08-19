@@ -11,6 +11,6 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * @param event                The event that triggered the command
  */
 public record CommandContainer(DiscordServer currentDiscordServer, DiscordUser currentDiscordUser, Prefix currentPrefix,
-                               String command, String contentOfCommand, MessageReceivedEvent event) {
+							   String command, String contentOfCommand, MessageReceivedEvent event) {
 
 }

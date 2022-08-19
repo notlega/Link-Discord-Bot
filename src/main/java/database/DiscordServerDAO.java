@@ -13,69 +13,69 @@ import java.sql.SQLException;
 
 public class DiscordServerDAO {
 
-    public DiscordServerDAO() {
+	public DiscordServerDAO() {
 
-    }
+	}
 
-    public void insertDiscordServer(GuildJoinEvent event) {
-        try {
-            Connection connection = LoadSQLDriver.loadSQLDriver();
-            SQLQuery<Integer> sqlQuery = new SQLQuery<>("INSERT INTO discord_servers (discord_server_id, discord_server_name) VALUES (?, ?);") {
+	public void insertDiscordServer(GuildJoinEvent event) {
+		try {
+			Connection connection = LoadSQLDriver.loadSQLDriver();
+			SQLQuery<Integer> sqlQuery = new SQLQuery<>("INSERT INTO discord_servers (discord_server_id, discord_server_name) VALUES (?, ?);") {
 
-                @Override
-                public Integer parseResult(ResultSet resultSet, int numRowsModified) {
-                    return numRowsModified;
-                }
-            };
+				@Override
+				public Integer parseResult(ResultSet resultSet, int numRowsModified) {
+					return numRowsModified;
+				}
+			};
 
-            sqlQuery.querySingle(connection, new String[]{String.valueOf(event.getGuild().getIdLong()), event.getGuild().getName()});
+			sqlQuery.querySingle(connection, new String[]{String.valueOf(event.getGuild().getIdLong()), event.getGuild().getName()});
 
-            // close connection
-            connection.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+			// close connection
+			connection.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-    public DiscordServer getDiscordServerByDiscordServerId(MessageReceivedEvent event) {
-        try {
-            Connection connection = LoadSQLDriver.loadSQLDriver();
-            SQLQuery<DiscordServer> sqlQuery = new SQLQuery<>("SELECT * FROM discord_servers WHERE discord_server_id = ?;") {
-                @Override
-                public DiscordServer parseResult(ResultSet resultSet, int numRowsModified) throws SQLException {
-                    return new DiscordServer(resultSet.getInt("id"), resultSet.getLong("discord_server_id"), resultSet.getString("discord_server_name"));
-                }
-            };
+	public DiscordServer getDiscordServerByDiscordServerId(MessageReceivedEvent event) {
+		try {
+			Connection connection = LoadSQLDriver.loadSQLDriver();
+			SQLQuery<DiscordServer> sqlQuery = new SQLQuery<>("SELECT * FROM discord_servers WHERE discord_server_id = ?;") {
+				@Override
+				public DiscordServer parseResult(ResultSet resultSet, int numRowsModified) throws SQLException {
+					return new DiscordServer(resultSet.getInt("id"), resultSet.getLong("discord_server_id"), resultSet.getString("discord_server_name"));
+				}
+			};
 
-            DiscordServer discordServer = sqlQuery.querySingle(connection, new String[]{String.valueOf(event.getGuild().getIdLong())});
+			DiscordServer discordServer = sqlQuery.querySingle(connection, new String[]{String.valueOf(event.getGuild().getIdLong())});
 
-            // Close connection
-            connection.close();
-            return discordServer;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+			// Close connection
+			connection.close();
+			return discordServer;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    public void deleteDiscordServer(GuildLeaveEvent event) {
-        try {
-            Connection connection = LoadSQLDriver.loadSQLDriver();
-            SQLQuery<Integer> sqlQuery = new SQLQuery<>("INSERT INTO discord_servers (discord_server_id, discord_server_name) VALUES (?, ?);") {
+	public void deleteDiscordServer(GuildLeaveEvent event) {
+		try {
+			Connection connection = LoadSQLDriver.loadSQLDriver();
+			SQLQuery<Integer> sqlQuery = new SQLQuery<>("DELETE FROM discord_servers WHERE discord_server_id = ?;") {
 
-                @Override
-                public Integer parseResult(ResultSet resultSet, int numRowsModified) {
-                    return numRowsModified;
-                }
-            };
+				@Override
+				public Integer parseResult(ResultSet resultSet, int numRowsModified) {
+					return numRowsModified;
+				}
+			};
 
-            sqlQuery.querySingle(connection, new String[]{String.valueOf(event.getGuild().getIdLong()), event.getGuild().getName()});
+			sqlQuery.querySingle(connection, new String[]{String.valueOf(event.getGuild().getIdLong())});
 
-            // close connection
-            connection.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+			// close connection
+			connection.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

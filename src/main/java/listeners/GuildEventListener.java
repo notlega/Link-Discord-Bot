@@ -12,21 +12,21 @@ import javax.annotation.Nonnull;
 
 public class GuildEventListener extends ListenerAdapter {
 
-    public GuildEventListener() {
+	public GuildEventListener() {
 
-    }
+	}
 
-    @Override
-    public void onGuildJoin(@NotNull GuildJoinEvent event) {
-        DiscordServerDAO discordServerDAO = new DiscordServerDAO();
-        PrefixDAO prefixDAO = new PrefixDAO();
-        discordServerDAO.insertDiscordServer(event);
-        prefixDAO.insertPrefix(event, Prefix.DEFAULT_PREFIX);
-    }
+	@Override
+	public void onGuildJoin(@NotNull GuildJoinEvent event) {
+		DiscordServerDAO discordServerDAO = new DiscordServerDAO();
+		PrefixDAO prefixDAO = new PrefixDAO();
+		discordServerDAO.insertDiscordServer(event);
+		prefixDAO.insertPrefix(event, Prefix.DEFAULT_PREFIX);
+	}
 
-    @Override
-    public void onGuildLeave(@Nonnull GuildLeaveEvent event) {
-        DiscordServerDAO discordServerDAO = new DiscordServerDAO();
-        discordServerDAO.deleteDiscordServer(event);
-    }
+	@Override
+	public void onGuildLeave(@Nonnull GuildLeaveEvent event) {
+		DiscordServerDAO discordServerDAO = new DiscordServerDAO();
+		discordServerDAO.deleteDiscordServer(event);
+	}
 }

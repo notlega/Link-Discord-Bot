@@ -1,8 +1,8 @@
 package database;
 
 import io.github.cdimascio.dotenv.Dotenv;
-import records.DiscordUser;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import records.DiscordUser;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,42 +11,42 @@ import java.sql.ResultSet;
 
 public class GetDiscordUser {
 
-    public GetDiscordUser() {
+	public GetDiscordUser() {
 
-    }
+	}
 
-    public DiscordUser getDiscordUser(MessageReceivedEvent event) {
+	public DiscordUser getDiscordUser(MessageReceivedEvent event) {
 
-        Dotenv dotenv = Dotenv.configure().load();
-        DiscordUser discordUser = null;
+		Dotenv dotenv = Dotenv.configure().load();
+		DiscordUser discordUser = null;
 
-        try {
+		try {
 
-            // Load JDBC Driver
-            Class.forName(dotenv.get("JDBC_DRIVER"));
+			// Load JDBC Driver
+			Class.forName(dotenv.get("JDBC_DRIVER"));
 
-            // Open connection to database
-            Connection conn = DriverManager.getConnection(dotenv.get("DB_URI"), dotenv.get("SQLUser"), dotenv.get("SQLPassword"));
+			// Open connection to database
+			Connection conn = DriverManager.getConnection(dotenv.get("DB_URI"), dotenv.get("SQLUser"), dotenv.get("SQLPassword"));
 
-            // SQL query string
-            String getDiscordUserQuery = "SELECT * FROM discord_users WHERE discord_user_id = ?;";
+			// SQL query string
+			String getDiscordUserQuery = "SELECT * FROM discord_users WHERE discord_user_id = ?;";
 
-            // Execute SQL query
-            PreparedStatement ps = conn.prepareStatement(getDiscordUserQuery, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            ps.setLong(1, event.getAuthor().getIdLong());
+			// Execute SQL query
+			PreparedStatement ps = conn.prepareStatement(getDiscordUserQuery, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			ps.setLong(1, event.getAuthor().getIdLong());
 
-            ResultSet rs = ps.executeQuery();
+			ResultSet rs = ps.executeQuery();
 
-            while (rs.next()) {
-                discordUser = new DiscordUser(rs.getInt("id"), rs.getInt("privilege_level"), rs.getLong("discord_user_id"), rs.getString("discord_user_tag"));
-            }
+			while (rs.next()) {
+				discordUser = new DiscordUser(rs.getInt("id"), rs.getInt("privilege_level"), rs.getLong("discord_user_id"), rs.getString("discord_user_tag"));
+			}
 
-            // Close connection
-            conn.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+			// Close connection
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-        return discordUser;
-    }
+		return discordUser;
+	}
 }

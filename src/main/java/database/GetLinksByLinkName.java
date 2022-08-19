@@ -10,54 +10,54 @@ import java.sql.ResultSet;
 
 public class GetLinksByLinkName {
 
-    public GetLinksByLinkName() {
+	public GetLinksByLinkName() {
 
-    }
+	}
 
-    public Link getLinksByLinkName(String linkName, String link) {
+	public Link getLinksByLinkName(String linkName, String link) {
 
-        Dotenv dotenv = Dotenv.configure().load();
-        Link links = null;
+		Dotenv dotenv = Dotenv.configure().load();
+		Link links = null;
 
-        try {
+		try {
 
-            // Load JDBC Driver
-            Class.forName(dotenv.get("JDBC_DRIVER"));
+			// Load JDBC Driver
+			Class.forName(dotenv.get("JDBC_DRIVER"));
 
-            // Open connection to database
-            Connection conn = DriverManager.getConnection(dotenv.get("DB_URI"), dotenv.get("SQLUser"), dotenv.get("SQLPassword"));
+			// Open connection to database
+			Connection conn = DriverManager.getConnection(dotenv.get("DB_URI"), dotenv.get("SQLUser"), dotenv.get("SQLPassword"));
 
-            // SQL query string
-            String getLinkQuery;
-            PreparedStatement ps = null;
+			// SQL query string
+			String getLinkQuery;
+			PreparedStatement ps = null;
 
-            if (link.equals("")) {
-                linkName = "%" + linkName + "%";
-                getLinkQuery = "SELECT * FROM links WHERE link_name LIKE ?;";
+			if (link.equals("")) {
+				linkName = "%" + linkName + "%";
+				getLinkQuery = "SELECT * FROM links WHERE link_name LIKE ?;";
 
-                // Execute SQL query
-                ps = conn.prepareStatement(getLinkQuery, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-                ps.setString(1, linkName);
-            } else if (Link.LINK_PATTERN.matcher(link).find()) {
-                getLinkQuery = "SELECT * FROM links WHERE link = ?;";
+				// Execute SQL query
+				ps = conn.prepareStatement(getLinkQuery, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+				ps.setString(1, linkName);
+			} else if (Link.LINK_PATTERN.matcher(link).find()) {
+				getLinkQuery = "SELECT * FROM links WHERE link = ?;";
 
-                // Execute SQL query
-                ps = conn.prepareStatement(getLinkQuery, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-                ps.setString(1, link);
-            }
+				// Execute SQL query
+				ps = conn.prepareStatement(getLinkQuery, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+				ps.setString(1, link);
+			}
 
-            ResultSet rs = ps.executeQuery();
+			ResultSet rs = ps.executeQuery();
 
-            while (rs.next()) {
-                links = new Link(rs.getInt("id"), rs.getString("link"), rs.getString("link_name"), rs.getInt("discord_user_id"), rs.getTimestamp("created_at"));
-            }
+			while (rs.next()) {
+				links = new Link(rs.getInt("id"), rs.getString("link"), rs.getString("link_name"), rs.getInt("discord_user_id"), rs.getTimestamp("created_at"));
+			}
 
-            // Close connection
-            conn.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+			// Close connection
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-        return links;
-    }
+		return links;
+	}
 }

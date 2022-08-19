@@ -19,81 +19,81 @@ import java.util.Map;
 
 public class CommandHandler {
 
-    private static final Map<String, Class<?>> commands = new HashMap<>();
+	private static final Map<String, Class<?>> commands = new HashMap<>();
 
-    public CommandHandler() {
+	public CommandHandler() {
 
-    }
+	}
 
-    public static Map<String, Class<?>> getCommands() {
-        return Collections.unmodifiableMap(commands);
-    }
+	public static Map<String, Class<?>> getCommands() {
+		return Collections.unmodifiableMap(commands);
+	}
 
-    public static void initialiseCommands() {
+	public static void initialiseCommands() {
 
-        InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream(CommandHandler.class.getPackageName().replaceAll("[.]", "/").replace("listeners", "commands"));
+		InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream(CommandHandler.class.getPackageName().replaceAll("[.]", "/").replace("listeners", "commands"));
 
-        if (stream == null) {
-            return;
-        }
+		if (stream == null) {
+			return;
+		}
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-        reader.lines()
-                .filter(line -> line.endsWith(".class"))
-                .forEach(line -> {
-                    try {
-                        commands.put(
-                                Class.forName(CommandHandler.class.getPackageName().replace(CommandHandler.class.getPackage().getName(), "commands") + "." + line.replace(".class", "")).getSimpleName(),
-                                Class.forName(CommandHandler.class.getPackageName().replace(CommandHandler.class.getPackage().getName(), "commands") + "." + line.replace(".class", ""))
-                        );
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                });
-    }
+		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+		reader.lines()
+				.filter(line -> line.endsWith(".class"))
+				.forEach(line -> {
+					try {
+						commands.put(
+								Class.forName(CommandHandler.class.getPackageName().replace(CommandHandler.class.getPackage().getName(), "commands") + "." + line.replace(".class", "")).getSimpleName(),
+								Class.forName(CommandHandler.class.getPackageName().replace(CommandHandler.class.getPackage().getName(), "commands") + "." + line.replace(".class", ""))
+						);
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+				});
+	}
 
-    public CommandContainer parseCommand(DiscordServer currentDiscordServer, DiscordUser currentDiscordUser, Prefix currentPrefix, MessageReceivedEvent event) {
+	public CommandContainer parseCommand(DiscordServer currentDiscordServer, DiscordUser currentDiscordUser, Prefix currentPrefix, MessageReceivedEvent event) {
 
-        String noPrefix = event.getMessage().getContentRaw().replaceFirst(currentPrefix.prefix(), "");
-        String command = noPrefix;
-        String content = null;
+		String noPrefix = event.getMessage().getContentRaw().replaceFirst(currentPrefix.prefix(), "");
+		String command = noPrefix;
+		String content = null;
 
-        if (noPrefix.contains(" ")) {
-            command = noPrefix.substring(0, noPrefix.indexOf(" "));
-            content = noPrefix.substring(noPrefix.indexOf(" ") + 1);
-        }
+		if (noPrefix.contains(" ")) {
+			command = noPrefix.substring(0, noPrefix.indexOf(" "));
+			content = noPrefix.substring(noPrefix.indexOf(" ") + 1);
+		}
 
-        return new CommandContainer(currentDiscordServer, currentDiscordUser, currentPrefix, command, content, event);
-    }
+		return new CommandContainer(currentDiscordServer, currentDiscordUser, currentPrefix, command, content, event);
+	}
 
-    public void handleCommand(CommandContainer commandContainer) {
+	public void handleCommand(CommandContainer commandContainer) {
 
-        try {
+		try {
 
-            Class<?> commandClass = commands.get(Capitalisation.capitalise(commandContainer.command()));
+			Class<?> commandClass = commands.get(Capitalisation.capitalise(commandContainer.command()));
 
-            if (commandClass == null) {
-                commandContainer.event().getMessage().reply("The command " + commandContainer.command() + " does not exist.").queue();
-                return;
-            }
+			if (commandClass == null) {
+				commandContainer.event().getMessage().reply("The command " + commandContainer.command() + " does not exist.").queue();
+				return;
+			}
 
-            Object newObject = commandClass.getDeclaredConstructors()[0].newInstance();
-            Method[] newMethodsArray = commandClass.getDeclaredMethods();
+			Object newObject = commandClass.getDeclaredConstructors()[0].newInstance();
+			Method[] newMethodsArray = commandClass.getDeclaredMethods();
 
-            Method newMethod = Arrays.stream(newMethodsArray)
-                    .filter(method -> method.getName().startsWith(commandContainer.command()))
-                    .findFirst()
-                    .orElse(null);
+			Method newMethod = Arrays.stream(newMethodsArray)
+					.filter(method -> method.getName().startsWith(commandContainer.command()))
+					.findFirst()
+					.orElse(null);
 
-            if (newMethod == null) {
-                return;
-            }
+			if (newMethod == null) {
+				return;
+			}
 
-            System.out.println("Invoking Method: " + newMethod.getName());
-            newMethod.setAccessible(true);
-            newMethod.invoke(newObject, commandContainer);
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
-    }
+			System.out.println("Invoking Method: " + newMethod.getName());
+			newMethod.setAccessible(true);
+			newMethod.invoke(newObject, commandContainer);
+		} catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+			e.printStackTrace();
+		}
+	}
 }
