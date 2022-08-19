@@ -11,15 +11,14 @@ import records.DiscordServer;
 import records.DiscordUser;
 import records.Prefix;
 
-public class CommandListener extends ListenerAdapter {
+public class MessageEventListener extends ListenerAdapter {
 
-    public CommandListener() {
+    public MessageEventListener() {
 
     }
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
-
         CommandHandler commandHandler = new CommandHandler();
 
         DiscordServerDAO discordServerDAO = new DiscordServerDAO();
@@ -44,15 +43,6 @@ public class CommandListener extends ListenerAdapter {
         // checks if message author is bot or Mee6
         if (event.getAuthor().isBot() || event.getAuthor().getIdLong() == 159985870458322944L) {
             return;
-        }
-        // checks if discord server exists in database
-        // if not, insert discord server into database
-        // insert default prefix into database
-        if (currentDiscordServer == null) {
-            discordServerDAO.insertDiscordServer(event);
-            currentDiscordServer = discordServerDAO.getDiscordServerByDiscordServerId(event);
-            prefixDAO.insertPrefix(currentDiscordServer, Prefix.DEFAULT_PREFIX);
-            currentPrefix = prefixDAO.getPrefixByDiscordServerId(currentDiscordServer);
         }
         // checks if discord user exists in database
         // if not, insert discord user into database

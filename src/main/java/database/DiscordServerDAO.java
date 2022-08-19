@@ -1,12 +1,14 @@
 package database;
 
-import records.DiscordServer;
-import io.github.cdimascio.dotenv.Dotenv;
+import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import records.DiscordServer;
 import util.LoadSQLDriver;
 import util.SQLQuery;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class DiscordServerDAO {
 
@@ -14,38 +16,37 @@ public class DiscordServerDAO {
 
     }
 
-    public void insertDiscordServer(MessageReceivedEvent event) {
-
+    public void insertDiscordServer(GuildJoinEvent event) {
         try {
-
             Connection connection = LoadSQLDriver.loadSQLDriver();
-            SQLQuery<Integer> sqlQuery = new SQLQuery<>("INSERT INTO discord_servers (discord_server_id, discord_server_name) VALUES (?, ?);\n") {
+            SQLQuery<Integer> sqlQuery = new SQLQuery<>("INSERT INTO discord_servers (discord_server_id, discord_server_name) VALUES (?, ?);") {
+
                 @Override
-                public Integer ParseResult(ResultSet resultSet) throws SQLException {
-                    return resultSet.getInt("discord_server_id");
+                public Integer parseResult(ResultSet resultSet, int numRowsModified) {
+                    return numRowsModified;
+                }
             };
 
-            int discordServer = sqlQuery.QuerySingle(connection, new String[] { String.valueOf(event.getGuild().getIdLong()) });
-            // Close connection
-            conn.close();
+            sqlQuery.querySingle(connection, new String[]{String.valueOf(event.getGuild().getIdLong()), event.getGuild().getName()});
+
+            // close connection
+            connection.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public DiscordServer getDiscordServerByDiscordServerId(MessageReceivedEvent event) {
-
         try {
-
             Connection connection = LoadSQLDriver.loadSQLDriver();
             SQLQuery<DiscordServer> sqlQuery = new SQLQuery<>("SELECT * FROM discord_servers WHERE discord_server_id = ?;") {
                 @Override
-                public DiscordServer ParseResult(ResultSet resultSet) throws SQLException {
+                public DiscordServer parseResult(ResultSet resultSet, int numRowsModified) throws SQLException {
                     return new DiscordServer(resultSet.getInt("id"), resultSet.getLong("discord_server_id"), resultSet.getString("discord_server_name"));
                 }
             };
 
-            DiscordServer discordServer = sqlQuery.QuerySingle(connection, new String[] { String.valueOf(event.getGuild().getIdLong()) });
+            DiscordServer discordServer = sqlQuery.querySingle(connection, new String[]{String.valueOf(event.getGuild().getIdLong())});
 
             // Close connection
             connection.close();

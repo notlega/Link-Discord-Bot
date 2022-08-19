@@ -14,8 +14,22 @@ public abstract class SQLQuery<T> {
         this.query = query;
     }
 
-    private ResultSet getResultSet(Connection connection, String[] parameters) {
+    private int getNumRowsModified(Connection connection, String[] parameters) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            for (int i = 0; i < parameters.length; i++) {
+                preparedStatement.setString(i + 1, parameters[i]);
+            }
 
+            return preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    private ResultSet getResultSet(Connection connection, String[] parameters) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             for (int i = 0; i < parameters.length; i++) {
@@ -30,16 +44,17 @@ public abstract class SQLQuery<T> {
         return null;
     }
 
-    public ArrayList<T> Query(Connection connection, String[] parameters) {
+    public ArrayList<T> query(Connection connection, String[] parameters) {
         ResultSet resultSet = getResultSet(connection, parameters);
-
         ArrayList<T> results = new ArrayList<>();
+
         if (resultSet == null) {
             return null;
         }
+
         try {
             while (resultSet.next()) {
-                results.add(ParseResult(resultSet));
+                results.add(parseResult(resultSet, 0));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -48,14 +63,15 @@ public abstract class SQLQuery<T> {
         return results;
     }
 
-    public T QuerySingle(Connection connection, String[] parameters) {
+    public T querySingle(Connection connection, String[] parameters) {
+        ResultSet resultSet = null;
+        int numRowsModified = 0;
 
-        if (query.startsWith("SELECT")) {
-            int resultSet;
+        if (!query.startsWith("SELECT")) {
+            numRowsModified = getNumRowsModified(connection, parameters);
         } else {
-            return null;
+            resultSet = getResultSet(connection, parameters);
         }
-        ResultSet resultSet = getResultSet(connection, parameters);
 
         if (resultSet == null) {
             return null;
@@ -63,7 +79,7 @@ public abstract class SQLQuery<T> {
 
         try {
             if (resultSet.next()) {
-                return ParseResult(resultSet);
+                return parseResult(resultSet, numRowsModified);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -72,13 +88,13 @@ public abstract class SQLQuery<T> {
         return null;
     }
 
-    public ArrayList<T> Query(Connection connection) {
-        return Query(connection, new String[]{});
+    public ArrayList<T> query(Connection connection) {
+        return query(connection, new String[]{});
     }
 
-    public T QuerySingle(Connection connection) {
-        return QuerySingle(connection, new String[]{});
+    public T querySingle(Connection connection) {
+        return querySingle(connection, new String[]{});
     }
 
-    protected abstract T ParseResult(ResultSet resultSet) throws SQLException;
+    protected abstract T parseResult(ResultSet resultSet, int numRowsModified) throws SQLException;
 }

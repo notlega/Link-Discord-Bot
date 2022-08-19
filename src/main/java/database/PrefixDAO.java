@@ -1,9 +1,12 @@
 package database;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import records.DiscordServer;
 import records.Prefix;
 import records.CommandContainer;
+import util.LoadSQLDriver;
+import util.SQLQuery;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,32 +21,24 @@ public class PrefixDAO {
 
     /**
      * Inserts a new prefix into the database.
-     * @param discordServer DiscordServer object.
+     * @param event The event that triggered the command.
      * @param prefix Prefix object.
      */
-    public void insertPrefix(DiscordServer discordServer, String prefix) {
-
-        Dotenv dotenv = Dotenv.configure().load();
-
+    public void insertPrefix(GuildJoinEvent event, String prefix) {
         try {
+            Connection connection = LoadSQLDriver.loadSQLDriver();
+            SQLQuery<Integer> sqlQuery = new SQLQuery<>("INSERT INTO link_bot_db.prefixes (prefix, discord_server_id) VALUES (?, (SELECT id FROM link_bot_db.discord_servers WHERE discord_server_id = ?));") {
 
-            // Load JDBC Driver
-            Class.forName(dotenv.get("JDBC_DRIVER"));
+                @Override
+                public Integer parseResult(ResultSet resultSet, int numRowsModified) {
+                    return numRowsModified;
+                }
+            };
 
-            // Open connection to database
-            Connection conn = DriverManager.getConnection(dotenv.get("DB_URI"), dotenv.get("SQLUser"), dotenv.get("SQLPassword"));
-
-            // SQL query string
-            String insertImageLink = "INSERT INTO prefixes (prefix, discord_server_id) VALUES (?, ?);";
-
-            // Execute SQL Query
-            PreparedStatement ps = conn.prepareStatement(insertImageLink);
-            ps.setString(1, prefix);
-            ps.setLong(2, discordServer.id());
-            ps.executeUpdate();
+            sqlQuery.querySingle(connection, new String[]{prefix, String.valueOf(event.getGuild().getIdLong())});
 
             // Close connection
-            conn.close();
+            connection.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

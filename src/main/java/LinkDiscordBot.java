@@ -1,7 +1,7 @@
 import io.github.cdimascio.dotenv.Dotenv;
 import listeners.CommandHandler;
-import listeners.CommandListener;
-import listeners.GuildJoinListener;
+import listeners.MessageEventListener;
+import listeners.GuildEventListener;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
@@ -27,8 +27,8 @@ public class LinkDiscordBot {
                 .setStatus(OnlineStatus.ONLINE)
                 .setActivity(Activity.playing("with waifus"))
                 .setRequestTimeoutRetry(true)
-                .addEventListeners(new CommandListener())
-                .addEventListeners(new GuildJoinListener())
+                .addEventListeners(new MessageEventListener())
+                .addEventListeners(new GuildEventListener())
                 .build();
     }
 }
