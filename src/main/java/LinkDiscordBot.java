@@ -1,5 +1,6 @@
 import io.github.cdimascio.dotenv.Dotenv;
-import listeners.CommandHandler;
+import listeners.SlashCommandInteractionEventListener;
+import util.CommandHandler;
 import listeners.GuildEventListener;
 import listeners.MessageEventListener;
 import net.dv8tion.jda.api.JDABuilder;
@@ -24,10 +25,11 @@ public class LinkDiscordBot {
 		JDABuilder.createDefault(dotenv.get("TOKEN"))
 				.setAutoReconnect(true)
 				.enableCache(EnumSet.of(CacheFlag.VOICE_STATE))
-				.setStatus(OnlineStatus.ONLINE)
+				.setStatus(OnlineStatus.IDLE)
 				.setActivity(Activity.playing("with waifus"))
 				.setRequestTimeoutRetry(true)
 				.addEventListeners(new MessageEventListener())
+				.addEventListeners(new SlashCommandInteractionEventListener())
 				.addEventListeners(new GuildEventListener())
 				.build();
 	}
