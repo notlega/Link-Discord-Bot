@@ -1,7 +1,7 @@
 package commands;
 
 import database.GetLinksByLinkName;
-import database.InsertLink;
+import database.LinkDAO;
 import embeds.SuccessEmbed;
 import records.CommandContainer;
 import records.EmbedClass;
@@ -34,12 +34,12 @@ public class AddLink {
 		}
 
 		GetLinksByLinkName getLink = new GetLinksByLinkName();
-		InsertLink insertLink = new InsertLink();
+		LinkDAO linkDAO = new LinkDAO();
 		Link link = getLink.getLinksByLinkName(linkName.toString(), splitContent[splitContent.length - 1]);
 
 		if (link == null) {
 
-			insertLink.insertLink(commandContainer.currentDiscordUser(), linkName.toString(), splitContent[splitContent.length - 1]);
+			linkDAO.insertLink(commandContainer.currentDiscordUser(), linkName.toString(), splitContent[splitContent.length - 1]);
 			link = getLink.getLinksByLinkName(linkName.toString(), splitContent[splitContent.length - 1]);
 			newEmbedField = new EmbedField[2];
 			newEmbedField[0] = new EmbedField("Link Name", link.linkName(), false);

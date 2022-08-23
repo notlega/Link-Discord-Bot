@@ -1,6 +1,6 @@
 package commands;
 
-import listeners.CommandHandler;
+import util.CommandHandler;
 import records.CommandContainer;
 
 import java.util.Objects;
