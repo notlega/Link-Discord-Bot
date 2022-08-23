@@ -1,8 +1,7 @@
 package listeners;
 
 import database.DiscordServerDAO;
-import database.GetDiscordUser;
-import database.InsertDiscordUser;
+import database.DiscordUserDAO;
 import database.PrefixDAO;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -10,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import records.DiscordServer;
 import records.DiscordUser;
 import records.Prefix;
+import util.CommandHandler;
 
 public class MessageEventListener extends ListenerAdapter {
 
@@ -20,15 +20,11 @@ public class MessageEventListener extends ListenerAdapter {
 	@Override
 	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 		CommandHandler commandHandler = new CommandHandler();
-
 		DiscordServerDAO discordServerDAO = new DiscordServerDAO();
-
-		InsertDiscordUser insertDiscordUser = new InsertDiscordUser();
-		GetDiscordUser getDiscordUser = new GetDiscordUser();
-
+		DiscordUserDAO discordUserDAO = new DiscordUserDAO();
 		PrefixDAO prefixDAO = new PrefixDAO();
 
-		DiscordUser currentDiscordUser = getDiscordUser.getDiscordUser(event);
+		DiscordUser currentDiscordUser = discordUserDAO.getDiscordUser(event);
 		DiscordServer currentDiscordServer = discordServerDAO.getDiscordServerByDiscordServerId(event);
 		Prefix currentPrefix = prefixDAO.getPrefixByDiscordServerId(currentDiscordServer);
 
@@ -47,8 +43,8 @@ public class MessageEventListener extends ListenerAdapter {
 		// checks if discord user exists in database
 		// if not, insert discord user into database
 		if (currentDiscordUser == null) {
-			insertDiscordUser.insertDiscordUser(event);
-			currentDiscordUser = getDiscordUser.getDiscordUser(event);
+			discordUserDAO.insertDiscordUser(event);
+			currentDiscordUser = discordUserDAO.getDiscordUser(event);
 		}
 		// checks if prefix is correct
 		if (!event.getMessage().getContentRaw().startsWith(currentPrefix.prefix())) {
