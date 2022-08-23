@@ -28,7 +28,14 @@ public class PrefixDAO {
 	public void insertPrefix(GuildJoinEvent event, String prefix) {
 		try {
 			Connection connection = LoadSQLDriver.loadSQLDriver();
-			SQLQuery<Integer> sqlQuery = new SQLQuery<>("INSERT INTO link_bot_db.prefixes (prefix, discord_server_id) VALUES (?, (SELECT id FROM link_bot_db.discord_servers WHERE discord_server_id = ?));") {
+			SQLQuery<Integer> sqlQuery = new SQLQuery<>("INSERT INTO link_bot_db.prefixes " +
+					"(prefix, discord_server_id) " +
+					"VALUES " +
+					"(?, " +
+					"(SELECT id " +
+					"FROM link_bot_db.discord_servers " +
+					"WHERE discord_server_id = ? " +
+					"));") {
 
 				@Override
 				public Integer parseResult(ResultSet resultSet, int numRowsModified) {

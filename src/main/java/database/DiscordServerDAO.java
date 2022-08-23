@@ -20,7 +20,10 @@ public class DiscordServerDAO {
 	public void insertDiscordServer(GuildJoinEvent event) {
 		try {
 			Connection connection = LoadSQLDriver.loadSQLDriver();
-			SQLQuery<Integer> sqlQuery = new SQLQuery<>("INSERT INTO discord_servers (discord_server_id, discord_server_name) VALUES (?, ?);") {
+			SQLQuery<Integer> sqlQuery = new SQLQuery<>("INSERT INTO discord_servers " +
+					"(discord_server_id, discord_server_name) " +
+					"VALUES " +
+					"(?, ?);") {
 
 				@Override
 				public Integer parseResult(ResultSet resultSet, int numRowsModified) {
@@ -40,10 +43,15 @@ public class DiscordServerDAO {
 	public DiscordServer getDiscordServerByDiscordServerId(MessageReceivedEvent event) {
 		try {
 			Connection connection = LoadSQLDriver.loadSQLDriver();
-			SQLQuery<DiscordServer> sqlQuery = new SQLQuery<>("SELECT * FROM discord_servers WHERE discord_server_id = ?;") {
+			SQLQuery<DiscordServer> sqlQuery = new SQLQuery<>("SELECT * " +
+					"FROM discord_servers " +
+					"WHERE discord_server_id = ?;") {
+
 				@Override
 				public DiscordServer parseResult(ResultSet resultSet, int numRowsModified) throws SQLException {
-					return new DiscordServer(resultSet.getInt("id"), resultSet.getLong("discord_server_id"), resultSet.getString("discord_server_name"));
+					return new DiscordServer(resultSet.getInt("id"),
+							resultSet.getLong("discord_server_id"),
+							resultSet.getString("discord_server_name"));
 				}
 			};
 
@@ -59,10 +67,19 @@ public class DiscordServerDAO {
 		return null;
 	}
 
+	/**
+	 * Deletes both the prefix and the discord server from the database.
+	 *
+	 * @param event {GuildLeaveEvent} The event that triggered the command.
+	 */
 	public void deleteDiscordServer(GuildLeaveEvent event) {
 		try {
 			Connection connection = LoadSQLDriver.loadSQLDriver();
-			SQLQuery<Integer> sqlQuery = new SQLQuery<>("DELETE FROM discord_servers WHERE discord_server_id = ?;") {
+			SQLQuery<Integer> sqlQuery = new SQLQuery<>("DELETE prefixes, discord_servers " +
+					"FROM prefixes " +
+					"INNER JOIN discord_servers " +
+					"ON prefixes.discord_server_id = discord_servers.id " +
+					"WHERE discord_servers.discord_server_id = ?;") {
 
 				@Override
 				public Integer parseResult(ResultSet resultSet, int numRowsModified) {
