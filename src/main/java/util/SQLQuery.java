@@ -9,9 +9,11 @@ import java.util.ArrayList;
 public abstract class SQLQuery<T> {
 
 	private final String query;
+	private final boolean querySelect;
 
 	public SQLQuery(String query) {
 		this.query = query;
+		this.querySelect = query.toLowerCase().startsWith("select");
 	}
 
 	private int getNumRowsModified(Connection connection, String[] parameters) {
@@ -67,7 +69,7 @@ public abstract class SQLQuery<T> {
 		ResultSet resultSet = null;
 		int numRowsModified = 0;
 
-		if (!query.startsWith("SELECT")) {
+		if (querySelect) {
 			numRowsModified = getNumRowsModified(connection, parameters);
 		} else {
 			resultSet = getResultSet(connection, parameters);
