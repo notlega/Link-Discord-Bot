@@ -1,11 +1,10 @@
-package listeners;
+package util;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import records.CommandContainer;
 import records.DiscordServer;
 import records.DiscordUser;
 import records.Prefix;
-import util.Capitalisation;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -31,7 +30,7 @@ public class CommandHandler {
 
 	public static void initialiseCommands() {
 
-		InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream(CommandHandler.class.getPackageName().replaceAll("[.]", "/").replace("listeners", "commands"));
+		InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream(CommandHandler.class.getPackageName().replaceAll("[.]", "/").replace(CommandHandler.class.getPackageName(), "commands"));
 
 		if (stream == null) {
 			return;
@@ -43,8 +42,8 @@ public class CommandHandler {
 				.forEach(line -> {
 					try {
 						commands.put(
-								Class.forName(CommandHandler.class.getPackageName().replace(CommandHandler.class.getPackage().getName(), "commands") + "." + line.replace(".class", "")).getSimpleName(),
-								Class.forName(CommandHandler.class.getPackageName().replace(CommandHandler.class.getPackage().getName(), "commands") + "." + line.replace(".class", ""))
+								Class.forName(CommandHandler.class.getPackageName().replace(CommandHandler.class.getPackageName(), "commands") + "." + line.replace(".class", "")).getSimpleName(),
+								Class.forName(CommandHandler.class.getPackageName().replace(CommandHandler.class.getPackageName(), "commands") + "." + line.replace(".class", ""))
 						);
 					} catch (ClassNotFoundException e) {
 						e.printStackTrace();
