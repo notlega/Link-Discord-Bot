@@ -5,9 +5,7 @@ import records.CommandContainer;
 
 public class SetPrefix {
 
-	public SetPrefix() {
-
-	}
+	private static final String COMMAND_DESCRIPTION = "Sets a new prefix for the sever the command was called in.";
 
 	public void setPrefix(CommandContainer commandContainer) {
 
