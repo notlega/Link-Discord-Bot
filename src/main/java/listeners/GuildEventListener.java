@@ -6,10 +6,13 @@ import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.api.events.guild.GuildReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import org.jetbrains.annotations.NotNull;
 import records.Prefix;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
 
 public class GuildEventListener extends ListenerAdapter {
 
@@ -19,7 +22,9 @@ public class GuildEventListener extends ListenerAdapter {
 
 	@Override
 	public void onGuildReady(@NotNull GuildReadyEvent event) {
-		// add slash commands later
+		ArrayList<CommandData> commandDataArrayList = new ArrayList<>();
+		commandDataArrayList.add(Commands.slash("slash", "description"));
+		event.getGuild().updateCommands().addCommands(commandDataArrayList).queue();
 	}
 
 	@Override
