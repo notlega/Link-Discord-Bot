@@ -1,4 +1,5 @@
 import io.github.cdimascio.dotenv.Dotenv;
+import listeners.ReadyEventListener;
 import listeners.SlashCommandInteractionEventListener;
 import util.CommandHandler;
 import listeners.GuildEventListener;
@@ -27,8 +28,11 @@ public class LinkDiscordBot {
 				.setStatus(OnlineStatus.IDLE)
 				.setActivity(Activity.playing("with waifus"))
 				.setRequestTimeoutRetry(true)
-				.addEventListeners(new SlashCommandInteractionEventListener())
-				.addEventListeners(new GuildEventListener())
+				.addEventListeners(
+						new ReadyEventListener(),
+						new GuildEventListener(),
+						new SlashCommandInteractionEventListener()
+				)
 				.build();
 	}
 }
