@@ -6,7 +6,9 @@ import records.Link;
 
 public class GetLink {
 
-	private static final String COMMAND_DESCRIPTION = "Allows a user to retrieve an inserted link under their discord tag.";
+	public String getCommandDescription() {
+		return "Allows a user to retrieve an inserted link under their discord tag.";
+	}
 
 	public void getLink(CommandContainer commandContainer) {
 

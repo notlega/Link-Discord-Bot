@@ -8,7 +8,9 @@ import java.util.stream.Collectors;
 
 public class Help {
 
-	private static final String COMMAND_DESCRIPTION = "SOS for commands. Displays all commands and command descriptions.";
+	public String getCommandDescription() {
+		return "SOS for commands. Displays all commands and command descriptions.";
+	}
 
 	public void help(CommandContainer commandContainer) {
 

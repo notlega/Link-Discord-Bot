@@ -13,7 +13,9 @@ import java.util.Objects;
 
 public class AddLink {
 
-	private static final String COMMAND_DESCRIPTION = "Allows a user to insert a link and name the link in the database.";
+	public String getCommandDescription() {
+		return "Allows a user to insert a link and name the link in the database.";
+	}
 
 	public void addLink(CommandContainer commandContainer) {
 
