@@ -2,9 +2,7 @@ package util;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import records.CommandContainer;
-import records.DiscordServer;
 import records.DiscordUser;
-import records.Prefix;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -51,9 +49,9 @@ public class CommandHandler {
 				});
 	}
 
-	public CommandContainer parseCommand(DiscordServer currentDiscordServer, DiscordUser currentDiscordUser, Prefix currentPrefix, MessageReceivedEvent event) {
+	public CommandContainer parseCommand(DiscordUser currentDiscordUser, MessageReceivedEvent event) {
 
-		String noPrefix = event.getMessage().getContentRaw().replaceFirst(currentPrefix.prefix(), "");
+		String noPrefix = event.getMessage().getContentRaw();
 		String command = noPrefix;
 		String content = null;
 
@@ -62,7 +60,7 @@ public class CommandHandler {
 			content = noPrefix.substring(noPrefix.indexOf(" ") + 1);
 		}
 
-		return new CommandContainer(currentDiscordServer, currentDiscordUser, currentPrefix, command, content, event);
+		return new CommandContainer(currentDiscordUser, command, content, event);
 	}
 
 	public void handleCommand(CommandContainer commandContainer) {
