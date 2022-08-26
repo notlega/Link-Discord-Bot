@@ -3,6 +3,8 @@ package commands;
 import database.GetLinksByLinkName;
 import database.LinkDAO;
 import embeds.SuccessEmbed;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import records.CommandContainer;
 import records.EmbedClass;
 import records.EmbedField;
@@ -15,6 +17,13 @@ public class AddLink {
 
 	public String getCommandDescription() {
 		return "Allows a user to insert a link and name the link in the database.";
+	}
+
+	public OptionData[] getOptions() {
+		return new OptionData[] {
+				new OptionData(OptionType.STRING, "link_name", "Link name of link being inserted", true),
+				new OptionData(OptionType.STRING, "link", "Link being inserted", true)
+		};
 	}
 
 	public void addLink(CommandContainer commandContainer) {
