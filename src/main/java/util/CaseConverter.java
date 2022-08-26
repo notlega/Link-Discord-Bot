@@ -1,47 +1,69 @@
 package util;
 
+import org.jetbrains.annotations.NotNull;
+
 public class CaseConverter {
 
     /**
      * Converts a string to snakeCase.
-     * @param camelCaseString The string to convert.
+     * @param string The string to convert.
      * @return The string in snakeCase.
      */
-    public static String toSnakeCase(String camelCaseString) {
-        StringBuilder snakeCaseString = new StringBuilder(Capitalisation.decapitalise(camelCaseString));
+    public static @NotNull String snakeCase(String string) {
+        StringBuilder newString = new StringBuilder(Capitalisation.decapitalise(string));
 
-        for (int i = 0; i < snakeCaseString.length(); i++) {
-            if (Character.isUpperCase(snakeCaseString.charAt(i))) {
-                snakeCaseString.setCharAt(i, Character.toLowerCase(snakeCaseString.charAt(i)));
-                snakeCaseString.insert(i, "_");
+        for (int i = 0; i < newString.length(); i++) {
+            if (Character.isUpperCase(newString.charAt(i))) {
+                newString.setCharAt(i, Character.toLowerCase(newString.charAt(i)));
+                newString.insert(i, "_");
                 i--;
             }
         }
-        return snakeCaseString.toString();
+        return newString.toString();
     }
 
     /**
      * Converts a string to camelCase.
-     * @param snakeCaseString The string to convert.
-     * @param capitaliseFirstLetter Whether to capitalise the first letter of the string.
+     * @param string The string to convert.
      * @return The string in camelCase.
      */
-    public static String toCamelCase(String snakeCaseString, boolean capitaliseFirstLetter) {
-        StringBuilder camelCaseString;
+    public static @NotNull String camelCase(String string) {
+        StringBuilder newString = new StringBuilder(Capitalisation.decapitalise(string));
 
-        if (capitaliseFirstLetter) {
-            camelCaseString = new StringBuilder(Capitalisation.capitalise(snakeCaseString));
-        } else {
-            camelCaseString = new StringBuilder(Capitalisation.decapitalise(snakeCaseString));
-        }
-
-        for (int i = 0; i < camelCaseString.length(); i++) {
-            if (camelCaseString.charAt(i) == '_') {
-                camelCaseString.setCharAt(i + 1, Character.toUpperCase(camelCaseString.charAt(i + 1)));
-                camelCaseString.deleteCharAt(i);
+        for (int i = 0; i < newString.length(); i++) {
+            if (newString.charAt(i) == '_') {
+                newString.setCharAt(i + 1, Character.toUpperCase(newString.charAt(i + 1)));
+                newString.deleteCharAt(i);
                 i--;
             }
         }
-        return camelCaseString.toString();
+        return newString.toString();
+    }
+
+    /**
+     * Converts a string to pascalCase.
+     * @param string The string to convert.
+     * @return The string in pascalCase.
+     */
+    public static @NotNull String pascalCase(String string) {
+        return Capitalisation.capitalise(camelCase(string));
+    }
+
+    /**
+     * Converts a string to kebabCase.
+     * @param string The string to convert.
+     * @return The string in kebabCase.
+     */
+    public static @NotNull String kebabCase(String string) {
+        StringBuilder newString = new StringBuilder(Capitalisation.decapitalise(string));
+
+        for (int i = 0; i < newString.length(); i++) {
+            if (Character.isUpperCase(newString.charAt(i))) {
+                newString.setCharAt(i, Character.toLowerCase(newString.charAt(i)));
+                newString.insert(i, "-");
+                i--;
+            }
+        }
+        return newString.toString();
     }
 }
