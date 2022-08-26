@@ -9,6 +9,7 @@ import records.CommandContainer;
 import records.EmbedClass;
 import records.EmbedField;
 import records.Link;
+import util.CaseConverter;
 
 import java.awt.*;
 import java.util.Objects;
@@ -21,8 +22,8 @@ public class AddLink {
 
 	public OptionData[] getOptions() {
 		return new OptionData[] {
-				new OptionData(OptionType.STRING, "link_name", "Link name of link being inserted", true),
-				new OptionData(OptionType.STRING, "link", "Link being inserted", true)
+				new OptionData(OptionType.STRING, CaseConverter.kebabCase("linkName"), "Link name of link being inserted", true),
+				new OptionData(OptionType.STRING, CaseConverter.kebabCase("link"), "Link being inserted", true)
 		};
 	}
 

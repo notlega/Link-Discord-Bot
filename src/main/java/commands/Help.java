@@ -2,6 +2,7 @@ package commands;
 
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import util.CaseConverter;
 import util.CommandHandler;
 import records.CommandContainer;
 
@@ -16,7 +17,7 @@ public class Help {
 
 	public OptionData[] getOptions() {
 		return new OptionData[] {
-				new OptionData(OptionType.STRING, "command_name", "Name of command you want to search", false)
+				new OptionData(OptionType.STRING, CaseConverter.kebabCase("commandName"), "Name of command you want to search", false)
 		};
 	}
 

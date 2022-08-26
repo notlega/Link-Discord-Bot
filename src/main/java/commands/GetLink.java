@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import records.CommandContainer;
 import records.Link;
+import util.CaseConverter;
 
 public class GetLink {
 
@@ -14,8 +15,8 @@ public class GetLink {
 
 	public OptionData[] getOptions() {
 		return new OptionData[] {
-				new OptionData(OptionType.STRING, "link_name", "Link name of link", false),
-				new OptionData(OptionType.STRING, "link", "The link itself", false)
+				new OptionData(OptionType.STRING, CaseConverter.kebabCase("linkName"), "Link name of link", false),
+				new OptionData(OptionType.STRING, CaseConverter.kebabCase("link"), "The link itself", false)
 		};
 	}
 
