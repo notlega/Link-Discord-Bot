@@ -5,10 +5,7 @@ import database.LinkDAO;
 import embeds.SuccessEmbed;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
-import records.CommandContainer;
-import records.EmbedClass;
-import records.EmbedField;
-import records.Link;
+import records.*;
 import util.CaseConverter;
 
 import java.awt.*;
@@ -32,10 +29,10 @@ public class AddLink {
 		EmbedClass newEmbed;
 		EmbedField[] newEmbedField;
 		SuccessEmbed successEmbed = new SuccessEmbed();
-		String[] splitContent = commandContainer.contentOfCommand().split(" ");
+		String[] splitContent = commandContainer.options().toString().split(" ");
 
 		if (!Link.LINK_PATTERN.matcher(splitContent[splitContent.length - 1]).find()) {
-			commandContainer.event().getMessage().reply("Invalid link entered").queue();
+			commandContainer.event().reply("Invalid link entered").queue();
 			return;
 		}
 
@@ -53,7 +50,7 @@ public class AddLink {
 
 		if (link == null) {
 
-			linkDAO.insertLink(commandContainer.currentDiscordUser(), linkName.toString(), splitContent[splitContent.length - 1]);
+			linkDAO.insertLink(new DiscordUser(0, 0, 123123, null), linkName.toString(), splitContent[splitContent.length - 1]);
 			link = getLink.getLinksByLinkName(linkName.toString(), splitContent[splitContent.length - 1]);
 			newEmbedField = new EmbedField[2];
 			newEmbedField[0] = new EmbedField("Link Name", link.linkName(), false);
@@ -62,15 +59,15 @@ public class AddLink {
 
 			// switch to using rich link preview later
 			try {
-				imageLink = Objects.requireNonNull(commandContainer.event().getMessage().getEmbeds().get(0).getImage()).getUrl();
+				imageLink = Objects.requireNonNull(commandContainer.event().getName());
 			} catch (NullPointerException e) {
 				e.printStackTrace();
 			}
 
-			newEmbed = new EmbedClass(Color.GREEN, newEmbedField, commandContainer.event().getAuthor().getAsMention(), imageLink, link.createdAt().toLocalDateTime(), "Added successfully!");
+			newEmbed = new EmbedClass(Color.GREEN, newEmbedField, Objects.requireNonNull(commandContainer.event().getMember()).getAsMention(), imageLink, link.createdAt().toLocalDateTime(), "Added successfully!");
 			successEmbed.successEmbed(newEmbed, commandContainer.event());
 		} else {
-			commandContainer.event().getMessage().reply(link + " has already been added into the database!").queue();
+			commandContainer.event().reply(link + " has already been added into the database!").queue();
 		}
 	}
 }

@@ -1,14 +1,15 @@
 package records;
 
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionMapping;
+
+import java.util.List;
 
 /**
- * @param currentDiscordUser   DiscordUser object
- * @param command              The command that was sent
- * @param contentOfCommand     The content of the command (if there is any)
- * @param event                The event that triggered the command
+ * @param command The command that was sent
+ * @param options The options that were sent
+ * @param event   The event that triggered the command
  */
-public record CommandContainer(DiscordUser currentDiscordUser, String command, String contentOfCommand,
-							   MessageReceivedEvent event) {
+public record CommandContainer(String command, List<OptionMapping> options, SlashCommandInteractionEvent event) {
 
 }

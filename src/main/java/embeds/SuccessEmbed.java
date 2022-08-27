@@ -1,7 +1,8 @@
 package embeds;
 
+import listeners.SlashCommandInteractionEventListener;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import records.EmbedClass;
 import records.EmbedField;
 
@@ -15,7 +16,7 @@ public class SuccessEmbed {
 	 * @param embedData Embed data
 	 * @param event     Message received event
 	 */
-	public void successEmbed(EmbedClass embedData, MessageReceivedEvent event) {
+	public void successEmbed(EmbedClass embedData, SlashCommandInteractionEvent event) {
 
 		EmbedBuilder successEmbed = new EmbedBuilder();
 
@@ -30,6 +31,6 @@ public class SuccessEmbed {
 		successEmbed.setTimestamp(embedData.timestamp());
 		successEmbed.setTitle(embedData.title());
 
-		event.getMessage().replyEmbeds(successEmbed.build()).queue();
+		event.replyEmbeds(successEmbed.build()).queue();
 	}
 }

@@ -25,14 +25,14 @@ public class GetLink {
 		GetLinksByLinkName getLinksByLinkName = new GetLinksByLinkName();
 		Link link;
 
-		if (commandContainer.contentOfCommand() == null) {
-			commandContainer.event().getMessage().reply("No link name to search for!").queue();
+		if (commandContainer.options() == null) {
+			commandContainer.event().reply("No link name to search for!").queue();
 		} else {
-			link = getLinksByLinkName.getLinksByLinkName(commandContainer.contentOfCommand(), "");
+			link = getLinksByLinkName.getLinksByLinkName("", "");
 			if (link.link().equals("")) {
-				commandContainer.event().getMessage().reply("No link with name similar to " + commandContainer.contentOfCommand() + " !").queue();
+				commandContainer.event().reply("No link with name similar to " + commandContainer.options() + " !").queue();
 			} else {
-				commandContainer.event().getMessage().reply(link.link()).queue();
+				commandContainer.event().reply(link.link()).queue();
 			}
 		}
 	}

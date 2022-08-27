@@ -25,7 +25,7 @@ public class Help {
 
 		String output;
 
-		if (commandContainer.contentOfCommand() == null) {
+		if (commandContainer.options().isEmpty()) {
 			output = CommandHandler.getCommands()
 					.values()
 					.stream()
@@ -35,16 +35,16 @@ public class Help {
 			output = CommandHandler.getCommands()
 					.keySet()
 					.stream()
-					.filter(className -> Objects.equals(className, commandContainer.contentOfCommand().substring(0, 1).toUpperCase() + commandContainer.command().substring(1)))
+					.filter(className -> Objects.equals(className, commandContainer.options().toString().substring(0, 1).toUpperCase() + commandContainer.command().substring(1)))
 					.map(className -> className + ": " + className + "\n")
 					.collect(Collectors.joining("", "", ""));
 		}
 
 		if (output.equals("")) {
-			commandContainer.event().getMessage().reply(commandContainer.command() + " is not a valid command!").queue();
+			commandContainer.event().reply(commandContainer.options().get(0) + " is not a valid command!").queue();
 			return;
 		}
 
-		commandContainer.event().getMessage().reply(output).queue();
+		commandContainer.event().reply(output).queue();
 	}
 }
