@@ -5,8 +5,6 @@ import records.CommandContainer;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,18 +41,7 @@ public class CommandHandler {
 	}
 
 	public static void handleCommand(CommandContainer commandContainer) {
-		try {
-			Class<?> commandClass = commands.get(commandContainer.command());
-			Object newObject = commandClass.getDeclaredConstructors()[0].newInstance();
-			Method newMethod = commandClass.getMethod(Capitalisation.decapitalise(commandContainer.command()), commandContainer.getClass());
-
-			System.out.println("Invoking Method: " + newMethod.getName());
-
-			newMethod.setAccessible(true);
-			newMethod.invoke(newObject, commandContainer);
-		} catch (InstantiationException | IllegalAccessException | InvocationTargetException |
-				 NoSuchMethodException e) {
-			e.printStackTrace();
-		}
+		MethodInvocator methodInvocator = new MethodInvocator(commands.get(commandContainer.command()));
+		methodInvocator.invokeCommands(Capitalisation.decapitalise(commandContainer.command()), new Object[]{commandContainer});
 	}
 }
