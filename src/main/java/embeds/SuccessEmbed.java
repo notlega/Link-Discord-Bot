@@ -1,6 +1,5 @@
 package embeds;
 
-import listeners.SlashCommandInteractionEventListener;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import records.EmbedClass;
