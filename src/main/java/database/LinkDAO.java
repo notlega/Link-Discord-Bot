@@ -1,14 +1,11 @@
 package database;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import records.DiscordUser;
 import records.Link;
 import util.LoadSQLDriver;
 import util.SQLQuery;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class LinkDAO {

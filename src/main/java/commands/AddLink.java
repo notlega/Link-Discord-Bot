@@ -19,7 +19,7 @@ public class AddLink implements CommandInterface {
 	}
 
 	public OptionData[] getOptions() {
-		return new OptionData[] {
+		return new OptionData[]{
 				new OptionData(OptionType.STRING, CaseConverter.kebabCase("linkName"), "Link name of link being inserted", true),
 				new OptionData(OptionType.STRING, CaseConverter.kebabCase("link"), "Link being inserted", true)
 		};
