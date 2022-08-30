@@ -3,6 +3,7 @@ package commands;
 import database.GetLinksByLinkName;
 import database.LinkDAO;
 import embeds.SuccessEmbed;
+import interfaces.CommandInterface;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import records.*;
@@ -11,7 +12,7 @@ import util.CaseConverter;
 import java.awt.*;
 import java.util.Objects;
 
-public class AddLink {
+public class AddLink implements CommandInterface {
 
 	public String getCommandDescription() {
 		return "Allows a user to insert a link and name the link in the database.";
