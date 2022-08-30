@@ -1,5 +1,6 @@
 package commands;
 
+import interfaces.CommandInterface;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import util.CaseConverter;
@@ -9,7 +10,7 @@ import records.CommandContainer;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class Help {
+public class Help implements CommandInterface {
 
 	public String getCommandDescription() {
 		return "SOS for commands. Displays all commands and command descriptions.";
