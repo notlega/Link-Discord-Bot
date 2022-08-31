@@ -9,6 +9,7 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.HttpClients;
+import twitter4j.Query;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
@@ -26,8 +27,9 @@ public class TwitterModel {
                 .setOAuthConsumerSecret(dotenv.get("TWITTER_CONSUMER_SECRET"))
                 .setOAuthAccessToken(dotenv.get("TWITTER_ACCESS_TOKEN"))
                 .setOAuthAccessTokenSecret(dotenv.get("TWITTER_ACCESS_TOKEN_SECRET"));
-        TwitterFactory tf = new TwitterFactory(cb.build());
-        Twitter twitter = tf.getInstance();
+        TwitterFactory twitterFactory = new TwitterFactory(cb.build());
+        Twitter twitter = twitterFactory.getInstance();
+        Query query = new Query("from:TwitterDev");
         return "";
     }
 
