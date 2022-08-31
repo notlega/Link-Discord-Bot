@@ -41,6 +41,7 @@ public class CommandHandler {
 	}
 
 	public static void handleCommand(CommandContainer commandContainer) {
+		System.out.println(commandContainer.command());
 		MethodInvocator methodInvocator = new MethodInvocator(commands.get(commandContainer.command()));
 		methodInvocator.invokeCommands(Capitalisation.decapitalise(commandContainer.command()), new Object[]{commandContainer});
 	}
