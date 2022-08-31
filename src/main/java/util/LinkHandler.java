@@ -41,20 +41,12 @@ public class LinkHandler {
         );
     }
 
-    public MetaTags getRichInfoFromTwitterLink(String link) throws Exception {
+    public String getRichInfoFromTwitterLink(String link) throws Exception {
 
         String[] parsedLink = link.replaceAll("^(https?://)?(www.)?twitter.com/", "").split("/");
 
         if (parsedLink.length == 1) {
-            return new MetaTags(
-                    "",
-                    "",
-                    link,
-                    "",
-                    "",
-                    "",
-                    ""
-            );
+            return "";
         }
 
         if (parsedLink[1].equals("status")) {
@@ -64,27 +56,11 @@ public class LinkHandler {
             }
 
             System.out.println(TwitterModel.getTweets(new String[]{parsedLink[2]}));
+            Object tweets = TwitterModel.getTweets(new String[]{parsedLink[2]});
 
-            return new MetaTags(
-                    "",
-                    "",
-                    link,
-                    "",
-                    "",
-                    "",
-                    ""
-            );
+            return TwitterModel.getTweets(new String[]{parsedLink[2]}).toString();
         }
-
-        return new MetaTags(
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                ""
-        );
+        return "";
     }
 
     /**
