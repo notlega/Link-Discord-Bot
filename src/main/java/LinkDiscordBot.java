@@ -22,7 +22,7 @@ public class LinkDiscordBot {
 		Dotenv dotenv = Dotenv.configure().load();
 		CommandHandler.initialiseCommands();
 
-		JDABuilder.createDefault(dotenv.get("TOKEN"))
+		JDABuilder.createDefault(dotenv.get("DISCORD_TOKEN"))
 				.setAutoReconnect(true)
 				.enableCache(EnumSet.of(CacheFlag.VOICE_STATE))
 				.setStatus(OnlineStatus.IDLE)
