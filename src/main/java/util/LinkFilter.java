@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 public class LinkFilter {
 
     public static boolean checkLinkValid(String link) {
-        Pattern pattern = Pattern.compile("[(htp?s:/w.)a-zA-Z0-9@%_+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_+.~#?&/=]*)", Pattern.CASE_INSENSITIVE);
+        Pattern pattern = Pattern.compile("[(htps)?:/w.a-zA-Z0-9@%_+~#=]{2,256}\\\\.[a-z]{2,6}\\\\b([-a-zA-Z0-9@:%_+.~#?&/=]*)", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(link);
         return matcher.find();
     }
