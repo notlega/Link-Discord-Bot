@@ -20,9 +20,9 @@ public class DiscordUserDAO {
 		try {
 			Connection connection = LoadSQLDriver.loadSQLDriver();
 			SQLQuery<Integer> sqlQuery = new SQLQuery<>("INSERT INTO discord_users " +
-					"(privilege_level, discord_user_id, discord_user_tag) " +
+					"(discord_user_id, discord_user_tag) " +
 					"VALUES " +
-					"(?, ?, ?);") {
+					"(?, ?);") {
 
 				@Override
 				public Integer parseResult(ResultSet resultSet, int numRowsModified) {
@@ -30,7 +30,7 @@ public class DiscordUserDAO {
 				}
 			};
 
-			sqlQuery.querySingle(connection, new String[]{String.valueOf(3), String.valueOf(event.getUser().getIdLong()), event.getUser().getAsTag()});
+			sqlQuery.querySingle(connection, new String[]{String.valueOf(event.getUser().getIdLong()), event.getUser().getAsTag()});
 
 			// Close connection
 			connection.close();
@@ -48,10 +48,12 @@ public class DiscordUserDAO {
 
 				@Override
 				public DiscordUser parseResult(ResultSet resultSet, int numRowsModified) throws SQLException {
-					return new DiscordUser(resultSet.getInt("id"),
-							resultSet.getInt("privilege_level"),
-							resultSet.getLong("discord_user_id"),
-							resultSet.getString("discord_user_name"));
+					if (resultSet.next()) {
+						return new DiscordUser(resultSet.getInt("id"),
+								resultSet.getLong("discord_user_id"),
+								resultSet.getString("discord_user_tag"));
+					}
+					return null;
 				}
 			};
 
