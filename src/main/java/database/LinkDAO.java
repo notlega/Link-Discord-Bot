@@ -37,7 +37,65 @@ public class LinkDAO {
 		}
 	}
 
-	public Link getLinks() {
+	public Link getLinkByLink(String strLink) {
+		try {
+			Connection connection = LoadSQLDriver.loadSQLDriver();
+			SQLQuery<Link> sqlQuery = new SQLQuery<>("SELECT * FROM links WHERE link = ?;") {
+
+				@Override
+				public Link parseResult(ResultSet resultSet, int numRowsModified) {
+					Link link = null;
+					try {
+						if (resultSet.next()) {
+							link = new Link(resultSet.getInt("id"), resultSet.getString("link"), resultSet.getString("link_name"), resultSet.getInt("discord_user_id"), resultSet.getTimestamp("created_at"));
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					return link;
+				}
+			};
+
+			Link link = sqlQuery.querySingle(connection, new String[]{strLink});
+
+			// Close connection
+			connection.close();
+			return link;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	public Link getLinkByLinkName(String strLinkName) {
+		try {
+			Connection connection = LoadSQLDriver.loadSQLDriver();
+			SQLQuery<Link> sqlQuery = new SQLQuery<>("SELECT * FROM links WHERE link_name LIKE ?;;") {
+
+				@Override
+				public Link parseResult(ResultSet resultSet, int numRowsModified) {
+					Link link = null;
+					try {
+						if (resultSet.next()) {
+							link = new Link(resultSet.getInt("id"), resultSet.getString("link"), resultSet.getString("link_name"), resultSet.getInt("discord_user_id"), resultSet.getTimestamp("created_at"));
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					return link;
+				}
+			};
+
+			Link link = sqlQuery.querySingle(connection, new String[]{"%" + strLinkName + "%"});
+
+			// Close connection
+			connection.close();
+			return link;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		return null;
 	}
 }
