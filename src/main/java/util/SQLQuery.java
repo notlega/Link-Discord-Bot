@@ -69,20 +69,18 @@ public abstract class SQLQuery<T> {
 		ResultSet resultSet = null;
 		int numRowsModified = 0;
 
-		if (querySelect) {
+		if (!querySelect) {
 			numRowsModified = getNumRowsModified(connection, parameters);
 		} else {
 			resultSet = getResultSet(connection, parameters);
 		}
 
-		if (resultSet == null) {
+		if (resultSet == null && numRowsModified == 0) {
 			return null;
 		}
 
 		try {
-			if (resultSet.next()) {
-				return parseResult(resultSet, numRowsModified);
-			}
+			return parseResult(resultSet, numRowsModified);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
