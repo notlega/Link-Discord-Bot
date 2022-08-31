@@ -31,7 +31,7 @@ public class CaseConverter {
         StringBuilder newString = new StringBuilder(Capitalisation.decapitalise(string));
 
         for (int i = 0; i < newString.length(); i++) {
-            if (newString.charAt(i) == '_') {
+            if (newString.charAt(i) == '_' || newString.charAt(i) == '-') {
                 newString.setCharAt(i + 1, Character.toUpperCase(newString.charAt(i + 1)));
                 newString.deleteCharAt(i);
                 i--;
