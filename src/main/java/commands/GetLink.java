@@ -1,6 +1,6 @@
 package commands;
 
-import database.GetLinksByLinkName;
+import database.LinkDAO;
 import interfaces.CommandInterface;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
@@ -23,13 +23,13 @@ public class GetLink implements CommandInterface {
 
 	public void getLink(CommandContainer commandContainer) {
 
-		GetLinksByLinkName getLinksByLinkName = new GetLinksByLinkName();
+		LinkDAO linkDAO = new LinkDAO();
 		Link link;
 
 		if (commandContainer.options() == null) {
 			commandContainer.event().reply("No link name to search for!").queue();
 		} else {
-			link = getLinksByLinkName.getLinksByLinkName("", "");
+			link = linkDAO.getLinkByLinkName( "");
 			if (link.link().equals("")) {
 				commandContainer.event().reply("No link with name similar to " + commandContainer.options() + " !").queue();
 			} else {

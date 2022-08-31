@@ -1,5 +1,6 @@
 package database;
 
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import records.DiscordUser;
 import util.LoadSQLDriver;
@@ -15,7 +16,7 @@ public class DiscordUserDAO {
 
 	}
 
-	public void insertDiscordUser(MessageReceivedEvent event) {
+	public void insertDiscordUser(SlashCommandInteractionEvent event) {
 		try {
 			Connection connection = LoadSQLDriver.loadSQLDriver();
 			SQLQuery<Integer> sqlQuery = new SQLQuery<>("INSERT INTO discord_users " +
@@ -29,7 +30,7 @@ public class DiscordUserDAO {
 				}
 			};
 
-			sqlQuery.querySingle(connection, new String[]{String.valueOf(3), String.valueOf(event.getAuthor().getIdLong()), event.getAuthor().getAsTag()});
+			sqlQuery.querySingle(connection, new String[]{String.valueOf(3), String.valueOf(event.getUser().getIdLong()), event.getUser().getAsTag()});
 
 			// Close connection
 			connection.close();
@@ -38,7 +39,7 @@ public class DiscordUserDAO {
 		}
 	}
 
-	public DiscordUser getDiscordUser(MessageReceivedEvent event) {
+	public DiscordUser getDiscordUser(SlashCommandInteractionEvent event) {
 		try {
 			Connection connection = LoadSQLDriver.loadSQLDriver();
 			SQLQuery<DiscordUser> sqlQuery = new SQLQuery<>("SELECT * " +
@@ -54,7 +55,7 @@ public class DiscordUserDAO {
 				}
 			};
 
-			DiscordUser discordUser = sqlQuery.querySingle(connection, new String[]{String.valueOf(event.getAuthor().getIdLong())});
+			DiscordUser discordUser = sqlQuery.querySingle(connection, new String[]{String.valueOf(event.getUser().getIdLong())});
 
 			// Close connection
 			connection.close();
