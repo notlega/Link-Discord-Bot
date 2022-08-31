@@ -21,7 +21,7 @@ public class SuccessEmbed {
 
 		successEmbed.setColor(embedData.color());
 		for (EmbedField field : embedData.field()) {
-			successEmbed.addField(field.name(), field.name(), field.inline());
+			successEmbed.addField(field.name(), field.value(), field.inline());
 		}
 		successEmbed.setFooter(embedData.footer());
 		if (embedData.image() != null) {

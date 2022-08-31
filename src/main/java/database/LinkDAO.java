@@ -56,11 +56,11 @@ public class LinkDAO {
 				}
 			};
 
-			Link link = sqlQuery.querySingle(connection, new String[]{strLink});
+			Link returnLink = sqlQuery.querySingle(connection, new String[]{strLink});
 
 			// Close connection
 			connection.close();
-			return link;
+			return returnLink;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -71,7 +71,7 @@ public class LinkDAO {
 	public Link getLinkByLinkName(String strLinkName) {
 		try {
 			Connection connection = LoadSQLDriver.loadSQLDriver();
-			SQLQuery<Link> sqlQuery = new SQLQuery<>("SELECT * FROM links WHERE link_name LIKE ?;;") {
+			SQLQuery<Link> sqlQuery = new SQLQuery<>("SELECT * FROM links WHERE link_name LIKE ?;") {
 
 				@Override
 				public Link parseResult(ResultSet resultSet, int numRowsModified) {

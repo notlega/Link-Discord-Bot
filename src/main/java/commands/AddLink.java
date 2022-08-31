@@ -10,10 +10,10 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import records.*;
 import util.CaseConverter;
 import util.LinkFilter;
+import util.LinkHandler;
 
 import java.awt.*;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.Objects;
 
 public class AddLink implements CommandInterface {
@@ -29,38 +29,41 @@ public class AddLink implements CommandInterface {
 		};
 	}
 
-	public void addLink(CommandContainer commandContainer) throws URISyntaxException, IOException {
-		DiscordUserDAO discordUserDAO = new DiscordUserDAO();
-		DiscordUser discordUser = discordUserDAO.getDiscordUser(commandContainer.event());
-		EmbedClass newEmbed;
-		EmbedField[] newEmbedField;
-		SuccessEmbed successEmbed = new SuccessEmbed();
-
-		if (!LinkFilter.checkLinkValid(commandContainer.options().get(1).toString())) {
+	public void addLink(CommandContainer commandContainer) throws IOException {
+		if (LinkFilter.checkLinkValid(commandContainer.options().get(1).getAsString())) {
 			commandContainer.event().reply("Invalid link entered").queue();
 			return;
 		}
 
-		StringBuilder linkName = new StringBuilder(commandContainer.options().get(0).toString());
+		DiscordUserDAO discordUserDAO = new DiscordUserDAO();
+		SuccessEmbed successEmbed = new SuccessEmbed();
+		DiscordUser discordUser = discordUserDAO.getDiscordUser(commandContainer.event());
+
+		if (discordUser == null) {
+			discordUserDAO.insertDiscordUser(commandContainer.event());
+			discordUser = discordUserDAO.getDiscordUser(commandContainer.event());
+		}
+
 		LinkDAO linkDAO = new LinkDAO();
-		Link link = linkDAO.getLinkByLink(commandContainer.options().get(1).toString());
+		Link link = linkDAO.getLinkByLink(commandContainer.options().get(1).getAsString());
 
 		if (link == null) {
-			linkDAO.insertLink(discordUser, linkName.toString(), commandContainer.options().get(1).toString());
-			link = linkDAO.getLinkByLink(commandContainer.options().get(1).toString());
-			newEmbedField = new EmbedField[2];
+			linkDAO.insertLink(discordUser, commandContainer.options().get(0).getAsString(), commandContainer.options().get(1).getAsString());
+			link = linkDAO.getLinkByLink(commandContainer.options().get(1).getAsString());
+			EmbedField[] newEmbedField = new EmbedField[2];
+			String imageLink;
 			newEmbedField[0] = new EmbedField("Link Name", link.linkName(), false);
 			newEmbedField[1] = new EmbedField("Link", link.link(), false);
-			String imageLink;
 
 			if (LinkFilter.checkLinkTwitter(link.link())) {
-				imageLink = (String) TwitterModel.getTweets(new String[] {"asd"});
+				imageLink = TwitterModel.getTweetImageLink();
+			} else {
+				imageLink = LinkHandler.getRichInfoFromLink(link.link());
 			}
 
-			newEmbed = new EmbedClass(Color.GREEN, newEmbedField, Objects.requireNonNull(commandContainer.event().getUser()).getAsMention(), null, link.createdAt().toLocalDateTime(), "Added successfully!");
-			successEmbed.successEmbed(newEmbed, commandContainer.event());
+			successEmbed.successEmbed(new EmbedClass(Color.GREEN, newEmbedField, Objects.requireNonNull(commandContainer.event().getUser()).getAsMention(), imageLink, link.createdAt().toLocalDateTime(), "Added successfully!"), commandContainer.event());
 		} else {
-			commandContainer.event().reply(link + " has already been added into the database!").queue();
+			commandContainer.event().reply(commandContainer.options().get(1).getAsString() + " has already been added into the database!").queue();
 		}
 	}
 }
