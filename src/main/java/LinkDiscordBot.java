@@ -2,7 +2,6 @@ import io.github.cdimascio.dotenv.Dotenv;
 import listeners.ReadyEventListener;
 import listeners.SlashCommandInteractionEventListener;
 import util.CommandHandler;
-import listeners.GuildEventListener;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
@@ -30,7 +29,6 @@ public class LinkDiscordBot {
 				.setRequestTimeoutRetry(true)
 				.addEventListeners(
 						new ReadyEventListener(),
-						new GuildEventListener(),
 						new SlashCommandInteractionEventListener()
 				)
 				.build();
