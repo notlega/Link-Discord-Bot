@@ -29,7 +29,7 @@ public class AddLink implements CommandInterface {
 		};
 	}
 
-	public void addLink(CommandContainer commandContainer) throws IOException {
+	public void addLink(CommandContainer commandContainer) throws Exception {
 		if (LinkFilter.checkLinkValid(commandContainer.options().get(1).getAsString())) {
 			commandContainer.event().reply("Invalid link entered").queue();
 			return;
@@ -56,7 +56,7 @@ public class AddLink implements CommandInterface {
 			newEmbedField[1] = new EmbedField("Link", link.link(), false);
 
 			if (LinkFilter.checkLinkTwitter(link.link())) {
-				imageLink = TwitterModel.getTweetImageLink();
+				imageLink = TwitterModel.getTweetImageLink(link.link());
 			} else {
 				imageLink = LinkHandler.getRichInfoFromLink(link.link());
 			}
