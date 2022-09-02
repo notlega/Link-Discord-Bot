@@ -53,7 +53,7 @@ public class TwitterModel {
                     return null;
                 }
                 JSONArray mediaArray = (JSONArray) includes.get("media");
-                return mediaArray.get(0).toString();
+                return ((JSONObject) mediaArray.get(0)).get("url").toString();
             }
         } catch (URISyntaxException e) {
             throw new URISyntaxException("Invalid URI", e.getInput());

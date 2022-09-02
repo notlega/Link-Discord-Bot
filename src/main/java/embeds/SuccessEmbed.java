@@ -7,15 +7,11 @@ import records.EmbedField;
 
 public class SuccessEmbed {
 
-	public SuccessEmbed() {
-
-	}
-
 	/**
 	 * @param embedData Embed data
-	 * @param event     Message received event
+	 * @param event     Slash command event
 	 */
-	public void successEmbed(EmbedClass embedData, SlashCommandInteractionEvent event) {
+	public static void successEmbed(EmbedClass embedData, SlashCommandInteractionEvent event) {
 
 		EmbedBuilder successEmbed = new EmbedBuilder();
 

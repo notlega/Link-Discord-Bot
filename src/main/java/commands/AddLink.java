@@ -2,6 +2,7 @@ package commands;
 
 import database.DiscordUserDAO;
 import database.LinkDAO;
+import embeds.FailEmbed;
 import embeds.SuccessEmbed;
 import interfaces.CommandInterface;
 import models.TwitterModel;
@@ -13,7 +14,6 @@ import util.LinkFilter;
 import util.LinkHandler;
 
 import java.awt.*;
-import java.io.IOException;
 import java.util.Objects;
 
 public class AddLink implements CommandInterface {
@@ -36,7 +36,6 @@ public class AddLink implements CommandInterface {
 		}
 
 		DiscordUserDAO discordUserDAO = new DiscordUserDAO();
-		SuccessEmbed successEmbed = new SuccessEmbed();
 		DiscordUser discordUser = discordUserDAO.getDiscordUser(commandContainer.event());
 
 		if (discordUser == null) {
@@ -61,9 +60,9 @@ public class AddLink implements CommandInterface {
 				imageLink = LinkHandler.getRichInfoFromLink(link.link());
 			}
 
-			successEmbed.successEmbed(new EmbedClass(Color.GREEN, newEmbedField, Objects.requireNonNull(commandContainer.event().getUser()).getAsMention(), imageLink, link.createdAt().toLocalDateTime(), "Added successfully!"), commandContainer.event());
+			SuccessEmbed.successEmbed(new EmbedClass(Color.GREEN, newEmbedField, Objects.requireNonNull(commandContainer.event().getUser()).getAsMention(), imageLink, link.createdAt().toLocalDateTime(), "Added successfully!"), commandContainer.event());
 		} else {
-			commandContainer.event().reply(commandContainer.options().get(1).getAsString() + " has already been added into the database!").queue();
+			FailEmbed.failEmbed(commandContainer.options().get(1).getAsString() + " has already been added into the database!", commandContainer.event());
 		}
 	}
 }
