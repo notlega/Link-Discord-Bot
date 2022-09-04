@@ -12,7 +12,7 @@ public class MethodInvocator {
 
 	public Object invokeCommands(String methodName, Object[] parameters) {
 		try {
-			Object newClazzInstance = clazz.getDeclaredConstructors()[0].newInstance();
+			Object newClazzInstance = clazz.getDeclaredConstructor().newInstance();
 			Class<?>[] parameterTypes = new Class<?>[parameters.length];
 
 			for (int i = 0; i < parameters.length; i++) {
