@@ -1,14 +1,14 @@
 package commands;
 
 import database.LinkDAO;
-import interfaces.CommandInterface;
+import interfaces.ICommandable;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import records.CommandContainer;
 import records.Link;
 import util.CaseConverter;
 
-public class GetLink implements CommandInterface {
+public class GetLink implements ICommandable {
 
 	public String getCommandDescription() {
 		return "Allows a user to retrieve an inserted link under their discord tag.";

@@ -4,7 +4,7 @@ import database.DiscordUserDAO;
 import database.LinkDAO;
 import embeds.FailEmbed;
 import embeds.SuccessEmbed;
-import interfaces.CommandInterface;
+import interfaces.ICommandable;
 import models.TwitterModel;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
@@ -16,7 +16,7 @@ import util.LinkHandler;
 import java.awt.*;
 import java.util.Objects;
 
-public class AddLink implements CommandInterface {
+public class AddLink implements ICommandable {
 
 	public String getCommandDescription() {
 		return "Allows a user to insert a link and name the link in the database.";
