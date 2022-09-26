@@ -1,5 +1,4 @@
 import io.github.cdimascio.dotenv.Dotenv;
-import listeners.GuildEventListener;
 import listeners.ReadyEventListener;
 import listeners.SlashCommandInteractionEventListener;
 import util.CommandHandler;
@@ -30,8 +29,7 @@ public class LinkDiscordBot {
 				.setRequestTimeoutRetry(true)
 				.addEventListeners(
 						new ReadyEventListener(),
-						new SlashCommandInteractionEventListener(),
-						new GuildEventListener()
+						new SlashCommandInteractionEventListener()
 				)
 				.build();
 	}
