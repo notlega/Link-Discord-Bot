@@ -15,6 +15,10 @@ public class SlashCommandInteractionEventListener extends ListenerAdapter {
 
 	@Override
 	public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
-		CommandHandler.handleCommand(new CommandContainer(CaseConverter.pascalCase(event.getCommandPath()), event.getOptions(), event));
+		try {
+			CommandHandler.handleCommand(new CommandContainer(CaseConverter.pascalCase(event.getCommandPath()), event.getOptions(), event));
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

@@ -5,15 +5,16 @@ import records.CommandContainer;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 public class CommandHandler {
 
-	private static final Map<String, Class<?>> commands = new HashMap<>();
+	private static final Map<String, Command> commands = new HashMap<>();
 
-	public static Map<String, Class<?>> getCommands() {
+	public static Map<String, Command> getCommands() {
 		return Collections.unmodifiableMap(commands);
 	}
 
@@ -31,18 +32,19 @@ public class CommandHandler {
 				.forEach(line -> {
 					try {
 						commands.put(
-								Class.forName("commands" + "." + line.replace(".class", "")).getSimpleName(),
-								Class.forName("commands" + "." + line.replace(".class", ""))
+								line.replace(".class", ""),
+								(Command) Class.forName("commands" + "." + line.replace(".class", "")).getDeclaredConstructor().newInstance()
 						);
-					} catch (ClassNotFoundException e) {
+					} catch (ClassNotFoundException | NoSuchMethodException | InstantiationException |
+							 IllegalAccessException | InvocationTargetException e) {
 						e.printStackTrace();
 					}
 				});
 	}
 
-	public static void handleCommand(CommandContainer commandContainer) {
+	public static void handleCommand(CommandContainer commandContainer) throws Exception {
 		System.out.println(commandContainer.command());
-		MethodInvocator methodInvocator = new MethodInvocator(commands.get(commandContainer.command()));
-		methodInvocator.invokeCommands(Capitalisation.decapitalise(commandContainer.command()), new Object[]{commandContainer});
+		Command command = getCommands().get(commandContainer.command());
+		command.executeCommand(commandContainer);
 	}
 }

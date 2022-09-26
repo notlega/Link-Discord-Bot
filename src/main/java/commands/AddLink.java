@@ -10,26 +10,30 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import records.*;
 import util.CaseConverter;
+import util.Command;
 import util.LinkFilter;
 import util.LinkHandler;
 
 import java.awt.*;
 import java.util.Objects;
 
-public class AddLink implements ICommandable {
+public class AddLink extends Command {
 
-	public String getCommandDescription() {
+	@Override
+	public String commandDescription() {
 		return "Allows a user to insert a link and name the link in the database.";
 	}
 
-	public OptionData[] getOptions() {
+	@Override
+	public OptionData[] commandOptions() {
 		return new OptionData[]{
 				new OptionData(OptionType.STRING, CaseConverter.kebabCase("linkName"), "Link name of link being inserted", true),
 				new OptionData(OptionType.STRING, CaseConverter.kebabCase("link"), "Link being inserted", true)
 		};
 	}
 
-	public void addLink(CommandContainer commandContainer) throws Exception {
+	@Override
+	public void executeCommand(CommandContainer commandContainer) throws Exception {
 		if (LinkFilter.checkLinkValid(commandContainer.options().get(1).getAsString())) {
 			commandContainer.event().reply("Invalid link entered").queue();
 			return;

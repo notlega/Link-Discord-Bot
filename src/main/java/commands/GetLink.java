@@ -7,21 +7,25 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import records.CommandContainer;
 import records.Link;
 import util.CaseConverter;
+import util.Command;
 
-public class GetLink implements ICommandable {
+public class GetLink extends Command {
 
-	public String getCommandDescription() {
+	@Override
+	public String commandDescription() {
 		return "Allows a user to retrieve an inserted link under their discord tag.";
 	}
 
-	public OptionData[] getOptions() {
+	@Override
+	public OptionData[] commandOptions() {
 		return new OptionData[] {
 				new OptionData(OptionType.STRING, CaseConverter.kebabCase("linkName"), "Link name of link", false),
 				new OptionData(OptionType.STRING, CaseConverter.kebabCase("link"), "The link itself", false)
 		};
 	}
 
-	public void getLink(CommandContainer commandContainer) {
+	@Override
+	public void executeCommand(CommandContainer commandContainer) throws Exception{
 
 		LinkDAO linkDAO = new LinkDAO();
 		Link link;
