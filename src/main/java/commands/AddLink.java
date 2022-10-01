@@ -4,7 +4,6 @@ import database.DiscordUserDAO;
 import database.LinkDAO;
 import embeds.FailEmbed;
 import embeds.SuccessEmbed;
-import interfaces.ICommandable;
 import models.TwitterModel;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
@@ -34,7 +33,7 @@ public class AddLink extends Command {
 
 	@Override
 	public void executeCommand(CommandContainer commandContainer) throws Exception {
-		if (LinkFilter.checkLinkValid(commandContainer.options().get(1).getAsString())) {
+		if (!LinkFilter.checkLinkValid(commandContainer.options().get(1).getAsString())) {
 			commandContainer.event().reply("Invalid link entered").queue();
 			return;
 		}

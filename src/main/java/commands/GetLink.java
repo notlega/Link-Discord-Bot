@@ -1,7 +1,6 @@
 package commands;
 
 import database.LinkDAO;
-import interfaces.ICommandable;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import records.CommandContainer;
