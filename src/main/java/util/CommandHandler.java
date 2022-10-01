@@ -1,5 +1,7 @@
 package util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import records.CommandContainer;
 
 import java.io.BufferedReader;
@@ -12,6 +14,8 @@ import java.util.Map;
 
 public class CommandHandler {
 
+	private static final Logger logger = LoggerFactory.getLogger(CommandHandler.class);
+
 	private static final Map<String, Command> commands = new HashMap<>();
 
 	public static Map<String, Command> getCommands() {
@@ -20,9 +24,11 @@ public class CommandHandler {
 
 	public static void initialiseCommands() {
 
+		logger.debug("Adding all commands to command HashMap...");
 		InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream(CommandHandler.class.getPackageName().replaceAll("[.]", "/").replace(CommandHandler.class.getPackageName(), "commands"));
 
 		if (stream == null) {
+			logger.error("Folder containing commands was not found.");
 			return;
 		}
 
@@ -35,15 +41,19 @@ public class CommandHandler {
 								line.replace(".class", ""),
 								(Command) Class.forName("commands" + "." + line.replace(".class", "")).getDeclaredConstructor().newInstance()
 						);
-					} catch (ClassNotFoundException | NoSuchMethodException | InstantiationException |
-							 IllegalAccessException | InvocationTargetException e) {
+					} catch (ClassNotFoundException e) {
+						logger.error("Class \"commands" + "." + line.replace(".class", "") + "\" was not found." );
+					} catch (NoSuchMethodException | InstantiationException |
+							IllegalAccessException | InvocationTargetException e) {
 						e.printStackTrace();
 					}
 				});
+
+		logger.debug("Successfully added all commands to command HashMap.");
 	}
 
 	public static void handleCommand(CommandContainer commandContainer) throws Exception {
-		System.out.println(commandContainer.command());
+		logger.debug("Command: " + commandContainer.command());
 		Command command = getCommands().get(commandContainer.command());
 		command.executeCommand(commandContainer);
 	}
