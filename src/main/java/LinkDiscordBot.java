@@ -23,10 +23,10 @@ public class LinkDiscordBot {
 
 	public static void initialise() {
 
-		logger.debug("Initialising bot...");
+		logger.info("Initialising bot...");
 		Dotenv dotenv = Dotenv.configure().load();
 
-		logger.debug("Initialising commands...");
+		logger.info("Initialising commands...");
 		CommandHandler.initialiseCommands();
 
 		JDABuilder LinkDiscordBot = JDABuilder.createDefault(dotenv.get("DISCORD_TOKEN"));
@@ -43,7 +43,7 @@ public class LinkDiscordBot {
 
 		try {
 			LinkDiscordBot.build();
-			logger.debug("Client is ready!");
+			logger.info("Client is ready!");
 		} catch (LoginException e) {
 			logger.error("Cannot login, invalid token.");
 		}

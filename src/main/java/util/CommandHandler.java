@@ -24,7 +24,7 @@ public class CommandHandler {
 
 	public static void initialiseCommands() {
 
-		logger.debug("Adding all commands to command HashMap...");
+		logger.info("Adding all commands to command HashMap...");
 		InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream(CommandHandler.class.getPackageName().replaceAll("[.]", "/").replace(CommandHandler.class.getPackageName(), "commands"));
 
 		if (stream == null) {
@@ -49,11 +49,11 @@ public class CommandHandler {
 					}
 				});
 
-		logger.debug("Successfully added all commands to command HashMap.");
+		logger.info("Successfully added all commands to command HashMap.");
 	}
 
 	public static void handleCommand(CommandContainer commandContainer) throws Exception {
-		logger.debug("Command: " + commandContainer.command());
+		logger.info("Command: " + commandContainer.command());
 		Command command = getCommands().get(commandContainer.command());
 		command.executeCommand(commandContainer);
 	}

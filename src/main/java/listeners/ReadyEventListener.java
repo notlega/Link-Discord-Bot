@@ -22,7 +22,7 @@ public class ReadyEventListener extends ListenerAdapter {
 
 	@Override
 	public void onReady(@NotNull ReadyEvent event) {
-		logger.debug("Adding commands to global slash commands...");
+		logger.info("Adding commands to global slash commands...");
 		ArrayList<CommandData> commandDataArrayList = new ArrayList<>();
 
 		CommandHandler.getCommands().forEach((key, command) -> commandDataArrayList.add(
@@ -33,6 +33,6 @@ public class ReadyEventListener extends ListenerAdapter {
 		));
 
 		event.getJDA().updateCommands().addCommands(commandDataArrayList).queue();
-		logger.debug("Global slash commands added.");
+		logger.info("Global slash commands added.");
 	}
 }
