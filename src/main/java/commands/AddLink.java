@@ -7,6 +7,8 @@ import embeds.SuccessEmbed;
 import models.TwitterModel;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import records.*;
 import util.CaseConverter;
 import util.Command;
@@ -17,6 +19,8 @@ import java.awt.*;
 import java.util.Objects;
 
 public class AddLink extends Command {
+
+	private static final Logger logger = LoggerFactory.getLogger(AddLink.class);
 
 	@Override
 	public String commandDescription() {
@@ -34,7 +38,8 @@ public class AddLink extends Command {
 	@Override
 	public void executeCommand(CommandContainer commandContainer) throws Exception {
 		if (!LinkFilter.checkLinkValid(commandContainer.options().get(1).getAsString())) {
-			commandContainer.event().reply("Invalid link entered").queue();
+			logger.error("Invalid link entered: {}", commandContainer.options().get(1).getAsString());
+			FailEmbed.failEmbed(commandContainer.options().get(1).getAsString() + " is not a valid link!", commandContainer.event());
 			return;
 		}
 
@@ -63,8 +68,10 @@ public class AddLink extends Command {
 				imageLink = LinkHandler.getRichInfoFromLink(link.link());
 			}
 
+			logger.info("Successfully added: {}", commandContainer.options().get(1).getAsString());
 			SuccessEmbed.successEmbed(new EmbedClass(Color.GREEN, newEmbedField, Objects.requireNonNull(commandContainer.event().getUser()).getAsMention(), imageLink, link.createdAt().toLocalDateTime(), "Added successfully!"), commandContainer.event());
 		} else {
+			logger.error("Duplicate link: {}", commandContainer.options().get(1).getAsString());
 			FailEmbed.failEmbed(commandContainer.options().get(1).getAsString() + " has already been added into the database!", commandContainer.event());
 		}
 	}
