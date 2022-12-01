@@ -14,25 +14,25 @@ import java.util.ArrayList;
 
 public class ReadyEventListener extends ListenerAdapter {
 
-	private static final Logger logger = LoggerFactory.getLogger(ReadyEventListener.class);
+    private static final Logger logger = LoggerFactory.getLogger(ReadyEventListener.class);
 
-	public ReadyEventListener() {
+    public ReadyEventListener() {
 
-	}
+    }
 
-	@Override
-	public void onReady(@NotNull ReadyEvent event) {
-		logger.info("Adding commands to global slash commands...");
-		ArrayList<CommandData> commandDataArrayList = new ArrayList<>();
+    @Override
+    public void onReady(@NotNull ReadyEvent event) {
+        logger.info("Adding commands to global slash commands...");
+        ArrayList<CommandData> commandDataArrayList = new ArrayList<>();
 
-		CommandHandler.getCommands().forEach((key, command) -> commandDataArrayList.add(
-				Commands.slash(
-						CaseConverter.kebabCase(key),
-						command.commandDescription()
-				).addOptions(command.commandOptions())
-		));
+        CommandHandler.getCommands().forEach((key, command) -> commandDataArrayList.add(
+                Commands.slash(
+                        CaseConverter.kebabCase(key),
+                        command.commandDescription()
+                ).addOptions(command.commandOptions())
+        ));
 
-		event.getJDA().updateCommands().addCommands(commandDataArrayList).queue();
-		logger.info("Global slash commands added.");
-	}
+        event.getJDA().updateCommands().addCommands(commandDataArrayList).queue();
+        logger.info("Global slash commands added!");
+    }
 }
