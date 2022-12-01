@@ -11,60 +11,59 @@ import java.sql.SQLException;
 
 public class DiscordUserDAO {
 
-	public DiscordUserDAO() {
+    public DiscordUserDAO() {
 
-	}
+    }
 
-	public void insertDiscordUser(SlashCommandInteractionEvent event) {
-		try {
-			Connection connection = LoadSQLDriver.loadSQLDriver();
-			SQLQuery<Integer> sqlQuery = new SQLQuery<>("INSERT INTO discord_users " +
-					"(discord_user_id, discord_user_tag) " +
-					"VALUES " +
-					"(?, ?);") {
+    public void insertDiscordUser(SlashCommandInteractionEvent event) {
+        try {
+            Connection connection = LoadSQLDriver.loadSQLDriver();
+            SQLQuery<Integer> sqlQuery = new SQLQuery<>("INSERT INTO discord_users " +
+                    "(discord_user_id) " +
+                    "VALUES " +
+                    "(?);") {
 
-				@Override
-				public Integer parseResult(ResultSet resultSet, int numRowsModified) {
-					return numRowsModified;
-				}
-			};
+                @Override
+                public Integer parseResult(ResultSet resultSet, int numRowsModified) {
+                    return numRowsModified;
+                }
+            };
 
-			sqlQuery.querySingle(connection, new String[]{String.valueOf(event.getUser().getIdLong()), event.getUser().getAsTag()});
+            sqlQuery.querySingle(connection, new String[]{String.valueOf(event.getUser().getIdLong())});
 
-			// Close connection
-			connection.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+            // Close connection
+            connection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-	public DiscordUser getDiscordUser(SlashCommandInteractionEvent event) {
-		try {
-			Connection connection = LoadSQLDriver.loadSQLDriver();
-			SQLQuery<DiscordUser> sqlQuery = new SQLQuery<>("SELECT * " +
-					"FROM discord_users " +
-					"WHERE discord_user_id = ?;") {
+    public DiscordUser getDiscordUser(SlashCommandInteractionEvent event) {
+        try {
+            Connection connection = LoadSQLDriver.loadSQLDriver();
+            SQLQuery<DiscordUser> sqlQuery = new SQLQuery<>("SELECT * " +
+                    "FROM discord_users " +
+                    "WHERE discord_user_id = ?;") {
 
-				@Override
-				public DiscordUser parseResult(ResultSet resultSet, int numRowsModified) throws SQLException {
-					if (resultSet.next()) {
-						return new DiscordUser(resultSet.getInt("id"),
-								resultSet.getLong("discord_user_id"),
-								resultSet.getString("discord_user_tag"));
-					}
-					return null;
-				}
-			};
+                @Override
+                public DiscordUser parseResult(ResultSet resultSet, int numRowsModified) throws SQLException {
+                    if (resultSet.next()) {
+                        return new DiscordUser(resultSet.getInt("id"),
+                                resultSet.getLong("discord_user_id"));
+                    }
+                    return null;
+                }
+            };
 
-			DiscordUser discordUser = sqlQuery.querySingle(connection, new String[]{String.valueOf(event.getUser().getIdLong())});
+            DiscordUser discordUser = sqlQuery.querySingle(connection, new String[]{String.valueOf(event.getUser().getIdLong())});
 
-			// Close connection
-			connection.close();
-			return discordUser;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+            // Close connection
+            connection.close();
+            return discordUser;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-		return null;
-	}
+        return null;
+    }
 }

@@ -2,6 +2,7 @@ package models;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.CookieSpecs;
